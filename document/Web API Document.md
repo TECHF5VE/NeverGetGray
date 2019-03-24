@@ -14,7 +14,7 @@ Body:
 
 Return:
 {
-  "state_code" : "xxx" [string]
+  "code" : "xxx" [string]
   "data" : "xxx" [any]
 }
 ```
@@ -26,7 +26,7 @@ Body:
 
 Return:
 {
-  "state_code" : "xxx" [string]
+  "code" : "xxx" [string]
   "data" : "xxx" [any]
 }
 ```
@@ -44,7 +44,7 @@ Body:
 
 Return:
 {
-  "state_code" : "xxx" [string],
+  "code" : "xxx" [string],
   "data" : {
     "auth_key" : "xxx" [string]
   }
@@ -61,7 +61,7 @@ Body:
 
 Return:
 {
-  "state_code" : "xxx" [string]
+  "code" : "xxx" [string]
   "data" : "xxx" [any]
 }
 ```
@@ -76,7 +76,7 @@ Body:
 
 Return:
 {
-  "state_code" : "xxx" [string]
+  "code" : "xxx" [string]
   "data" : {
     "playlist" : [
       {
@@ -108,7 +108,7 @@ Body:
 
 Return:
 {
-  "state_code" : "xxx" [string],
+  "code" : "xxx" [string],
   "data" : {
     "uid" : "xxx" [string]
   }
@@ -135,7 +135,7 @@ Body:
 
 Return:
 {
-  "state_code" : "xxx" [string],
+  "code" : "xxx" [string],
   "data" : "xxx" [any]
 }
 ```
@@ -150,7 +150,7 @@ Body:
 
 Return:
 {
-  "state_code" : "xxx" [string],
+  "code" : "xxx" [string],
   "data" : {
     "album_img" : "xxx" [base64 string],
     "lyrics" : "xxx" [string],
@@ -170,7 +170,7 @@ Body:
 
 Return:
 {
-  "state_code" : "xxx" [string],
+  "code" : "xxx" [string],
   "data" : "xxx" [any]
 }
 ```
@@ -186,7 +186,7 @@ Body:
 
 Return:
 {
-  "state_code" : "xxx" [string],
+  "code" : "xxx" [string],
   "data" : "xxx" [any]
 }
 ```
