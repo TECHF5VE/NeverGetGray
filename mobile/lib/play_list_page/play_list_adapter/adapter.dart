@@ -25,8 +25,8 @@ class _PlayListConnector implements Connector<PlayListState, List<ItemBean>> {
                   .toList(growable: true);
     } else {
       return <ItemBean>[
-        ItemBean('playListItem', PlayListItemState()..album='test1'..artist='test1'..name='test1'..uid='test1'),
-        ItemBean('playListItem', PlayListItemState()..album='test2'..artist='test2'..name='test2'..uid='test2'),
+        ItemBean('playListItem', PlayListItemState()..album='https://i.imgur.com/70sJIg7.png'..name='test1'..uid='test1'),
+        ItemBean('playListItem', PlayListItemState()..album='https://i.imgur.com/dNrc79d.jpg'..name='test2'..uid='test2'),
       ];
     }
   }

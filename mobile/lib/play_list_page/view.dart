@@ -5,9 +5,9 @@ import 'state.dart';
 
 Widget buildView(
     PlayListState state, Dispatch dispatch, ViewService viewService) {
-      final adapter = viewService.buildAdapter();
+  final adapter = viewService.buildAdapter();
   return new DefaultTabController(
-      length: 3,
+      length: 4,
       child: Scaffold(
         appBar: TabBar(
           indicatorColor: Colors.blue,
@@ -23,11 +23,13 @@ Widget buildView(
           children: <Widget>[
             Container(
               child: Expanded(
-                child: ListView.builder(
-                  itemBuilder: adapter.itemBuilder,
-                  itemCount:  adapter.itemCount,
+                  child: Container(
+                    padding: EdgeInsets.only(top: 32),
+                    child: ListView.builder(
+                      itemBuilder: adapter.itemBuilder,
+                      itemCount: adapter.itemCount,
                 ),
-              ),
+              )),
             ),
             Container(
               child: viewService.buildComponent('play_controller'),

@@ -4,15 +4,14 @@ class PlayListItemState implements Cloneable<PlayListItemState> {
   String uid;
   String name;
   String album;
-  String artist;
+  // List<>
 
   @override
   PlayListItemState clone() {
     final newState = PlayListItemState()
     ..uid = this.uid
     ..name = this.name
-    ..album = this.album
-    ..artist = this.artist;
+    ..album = this.album;
 
     return newState;
   }

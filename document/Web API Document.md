@@ -85,7 +85,7 @@ Return:
         "songs" : [
           {
             "name" : "xxx" [string],
-            "singer" : "xxx" [string],
+            "artist" : "xxx" [string],
             "album" : "xxx" [string],
             "uid" : "xxx" [string]
           },

@@ -89,26 +89,5 @@ Widget _buildPlayMenu(PageState pageState, Dispatch dispatch, ViewService viewSe
 }
 
 Widget _buildPlayList(PageState pageState, Dispatch dispatch, ViewService viewService) {
-    // return Container(
-    //   padding: const EdgeInsets.only(top: 32.0),
-    //   child: Row(
-    //     children: <Widget>[
-    //       Expanded(
-    //           child: Column(
-    //               crossAxisAlignment: CrossAxisAlignment.center,
-    //               mainAxisAlignment: MainAxisAlignment.center,
-    //               children: <Widget>[
-
-    //             viewService.buildComponent('play_list'),
-
-    //             Container(
-    //               padding: const EdgeInsets.only(top: 32.0, left: 0.0, right: 0.0, bottom: 0.0),
-    //               child: viewService.buildComponent('play_controller'),
-    //             )
-    //           ])),
-    //     ],
-    //   ),
-    // );
-
     return viewService.buildComponent('play_list');
 }
