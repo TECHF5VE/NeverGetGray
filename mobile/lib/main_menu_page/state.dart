@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:fish_redux/fish_redux.dart';
 import '../music_player_page/cover_component/state.dart';
 import '../music_player_page/play_controller_component/state.dart';
+import '../play_list_page/state.dart';
+import '../play_list_page/play_list_item/state.dart';
 
 enum TagType {
   MusicPlayer,
@@ -15,6 +17,7 @@ class PageState implements Cloneable<PageState> {
   String coverUri;
   num imageAngle;
   Timer timer;
+  List<PlayListItemState> playListItems;
 
   @override
   PageState clone() {
@@ -22,7 +25,8 @@ class PageState implements Cloneable<PageState> {
     ..currentTagType = this.currentTagType
     ..coverUri = this.coverUri
     ..imageAngle = this.imageAngle
-    ..timer = this.timer;
+    ..timer = this.timer
+    ..playListItems = playListItems;
 
     return newState;
   }
@@ -31,9 +35,10 @@ class PageState implements Cloneable<PageState> {
 PageState initState(Map<String, dynamic> args) {
   return PageState()
   ..currentTagType = TagType.MusicPlayer
-  ..coverUri = 'https://i.imgur.com/C2tErIU.jpg'
+  ..coverUri = 'https://i.imgur.com/jg6lMnv.png'
   ..timer = null
-  ..imageAngle = 0.0;
+  ..imageAngle = 0.0
+  ..playListItems = [];
 }
 
 class CoverConnector extends ConnOp<PageState, CoverState> {
@@ -62,4 +67,17 @@ class PlayControllerConnector extends ConnOp<PageState, PlayControllerState> {
 
   @override
   void set(PageState state, PlayControllerState substate) {}
+}
+
+class PlayListConnector extends ConnOp<PageState, PlayListState> {
+  @override
+  PlayListState get(PageState state) {
+    final playListState = PlayListState()
+      ..playListItems = state.playListItems;
+
+    return playListState;
+  }
+
+  @override
+  void set(PageState state, PlayListState substate) {}
 }
