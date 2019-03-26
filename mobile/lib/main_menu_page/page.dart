@@ -7,6 +7,7 @@ import 'reducer.dart';
 import '../music_player_page/cover_component/component.dart';
 import '../music_player_page/play_controller_component/component.dart';
 import '../play_list_page/component.dart';
+import '../setting_page/component.dart';
 
 class MainMenuPage extends Page<PageState, Map<String, dynamic>> {
   MainMenuPage()
@@ -21,6 +22,7 @@ class MainMenuPage extends Page<PageState, Map<String, dynamic>> {
           'cover' : CoverConnector() + CoverComponent(),
           'play_controller' : PlayControllerConnector() + PlayControllerComponent(),
           'play_list' : PlayListConnector() + PlayListComponent(),
+          'setting' : SettingConnector() + SettingComponent(),
         }
       ),
       middlewares : []

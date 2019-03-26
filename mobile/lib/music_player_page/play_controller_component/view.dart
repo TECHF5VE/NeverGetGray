@@ -57,7 +57,7 @@ Widget buildView(
                     padding: const EdgeInsets.all(0),
                   ),
                   IconButton(
-                    icon: Icon(Icons.playlist_play),
+                    icon: Icon(Icons.queue_music),
                     iconSize: _iconSize - 30,
                     onPressed: () {},
                     padding: const EdgeInsets.all(0),

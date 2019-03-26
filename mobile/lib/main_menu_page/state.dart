@@ -5,6 +5,7 @@ import '../music_player_page/cover_component/state.dart';
 import '../music_player_page/play_controller_component/state.dart';
 import '../play_list_page/state.dart';
 import '../play_list_page/play_list_item/state.dart';
+import '../setting_page/state.dart';
 
 enum TagType {
   MusicPlayer,
@@ -80,4 +81,14 @@ class PlayListConnector extends ConnOp<PageState, PlayListState> {
 
   @override
   void set(PageState state, PlayListState substate) {}
+}
+
+class SettingConnector extends ConnOp<PageState, SettingState> {
+  @override
+  SettingState get(PageState state) {
+    return SettingState();
+  }
+
+  @override
+  void set(PageState state, SettingState substate) {}
 }

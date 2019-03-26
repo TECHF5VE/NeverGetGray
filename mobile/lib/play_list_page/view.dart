@@ -20,11 +20,19 @@ Widget buildView(
           ],
         ),
         body: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+              IconButton(icon: Icon(Icons.add), onPressed: () {}, iconSize: 32,),
+              IconButton(icon: Icon(Icons.filter_list), onPressed: () {}, padding: EdgeInsets.only(right: 32), iconSize: 32),
+            ],),
+
             Container(
               child: Expanded(
                   child: Container(
-                    padding: EdgeInsets.only(top: 32),
+                    padding: EdgeInsets.only(top: 0),
                     child: ListView.builder(
                       itemBuilder: adapter.itemBuilder,
                       itemCount: adapter.itemCount,
