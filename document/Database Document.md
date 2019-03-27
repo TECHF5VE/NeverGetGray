@@ -17,7 +17,7 @@
 | name | type | key | null | default | desc |
 |---|---|---|---|---|---|
 | id | varchar | primary key | N | | 主键 uuid |
-| uId | long | FK | N | | 外键 Ngg_User.id |
+| userId | long | FK | N | | 外键 Ngg_User.id |
 | ip | varchar | | N | | 登录ip |
 | platform | varchar | | Y | | 平台 |
 | createdAt | timestamp | | N | CURRENT TIMESTAMP | |
@@ -26,9 +26,10 @@
 | name | type | key | null | default | desc |
 |---|---|---|---|---|---|
 | id | varchar | primary key | N | | 主键 uuid |
-| uId | long | FK | N | | 外键 Ngg_User.id |
+| userId | long | FK | N | | 外键 Ngg_User.id |
 | name | varchar | | N | | 名称 |
 | deleted | boolean | | N | false | |
+| status | enum | | Y | | |
 | createdAt | timestamp | | N | CURRENT TIMESTAMP | |
 | updatedAt | timestamp | | N | TIMESTAMP | |
 | deletedAt | timestamp | | N | TIMESTAMP | |
@@ -37,13 +38,14 @@
 | name | type | key | null | default | desc |
 |---|---|---|---|---|---|
 | id | varchar | primary key | N | | 主键 uuid |
-| pId | long | FK | N | | 外键 Ngg_Playlist.id |
+| playlistId | long | FK | N | | 外键 Ngg_Playlist.id |
 | name | varchar | | N | | 名称 |
-| singer | varchar | | Y | | 歌手 |
+| artist | varchar | | Y | | 歌手 |
 | album | varchar | | Y | | 封面地址 |
 | lyrics | varchar | | Y | | 歌词地址 |
 | url | varchar | | N | | 文件地址 |
 | deleted | boolean | | N | false | |
+| status | enum | | Y | | |
 | createdAt | timestamp | | N | CURRENT TIMESTAMP | |
 | updatedAt | timestamp | | N | TIMESTAMP | |
 | deletedAt | timestamp | | N | TIMESTAMP | |
