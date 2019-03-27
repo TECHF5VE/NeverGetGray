@@ -7,11 +7,13 @@ import 'action.dart';
 import 'state.dart';
 
 import 'package:never_get_gray_mobile/main_menu_page/page.dart' as mainPage;
+import 'package:never_get_gray_mobile/register_page/page.dart' as registerPage;
 
 Effect<LogInState> buildEffect() {
   return combineEffects(<Object, Effect<LogInState>>{
     Lifecycle.initState: _init,
     LogInAction.onLogIn: _onLogIn,
+    LogInAction.onRegister: _onRegister,
   });
 }
 
@@ -38,7 +40,7 @@ void _init(Action action, Context<LogInState> ctx) async {
 void _onLogIn(Action action, Context<LogInState> ctx) async {
   final logInInfo = action.payload as Map<String, String>;
   // final apiPath = logInInfo['ipAddr'] + 'session:' + logInInfo['port'];
-  final apiPath = logInInfo['ipAddr'] + 'session1';
+  final apiPath = logInInfo['ipAddr'] + '/session';
 
   ctx.dispatch(LogInActionCreator.logInPendingAction());
 
@@ -58,9 +60,8 @@ void _onLogIn(Action action, Context<LogInState> ctx) async {
         await preferences.setString('port', logInInfo['port']);
 
         Navigator.of(ctx.context)
-            .push<Map<String, String>>(MaterialPageRoute<Map<String, String>>(
-          builder: (BuildContext buildCtx) =>
-              mainPage.MainMenuPage().buildPage({
+            .pushReplacement(MaterialPageRoute<Map<String, String>>(
+          builder: (buildCtx) => mainPage.MainMenuPage().buildPage({
                 'userName': ctx.state.userName.text,
                 'password': ctx.state.password.text,
                 'ipAddr': ctx.state.serverIP.text,
@@ -69,41 +70,36 @@ void _onLogIn(Action action, Context<LogInState> ctx) async {
               }),
         ));
       } else {
-        showDialog(
-            context: ctx.context,
-            builder: (context) => AlertDialog(
-                  title: Text('Log In Failed'),
-                  content: Text(
-                    'Invalid user name or password.',
-                  ),
-                  actions: <Widget>[
-                    FlatButton(
-                      child: Text('Close'),
-                      onPressed: () => Navigator.of(context).pop(),
-                    )
-                  ],
-                )).then((value) {
-          ctx.dispatch(LogInActionCreator.logInErrorAction());
-        });
+        _showFailedDialog('Invalid user name or password.', ctx);
       }
     } catch (e) {
       // print(e);
-      showDialog(
-          context: ctx.context,
-          builder: (context) => AlertDialog(
-                title: Text('Log In Failed'),
-                content: Text(
-                  'Invalid private server IP address or port number.',
-                ),
-                actions: <Widget>[
-                  FlatButton(
-                    child: Text('Close'),
-                    onPressed: () => Navigator.of(context).pop(),
-                  )
-                ],
-              )).then((value) {
-        ctx.dispatch(LogInActionCreator.logInErrorAction());
-      });
+      _showFailedDialog(
+          'Invalid private server IP address or port number.', ctx);
     }
   });
+}
+
+void _showFailedDialog(String message, Context<LogInState> ctx) {
+  showDialog(
+      context: ctx.context,
+      builder: (context) => AlertDialog(
+            title: Text('Log In Failed'),
+            content: Text(
+              message,
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Close'),
+                onPressed: () => Navigator.of(context).pop(),
+              )
+            ],
+          )).then((value) {
+    ctx.dispatch(LogInActionCreator.logInErrorAction());
+  });
+}
+
+void _onRegister(Action action, Context<LogInState> ctx) {
+  Navigator.of(ctx.context).push(MaterialPageRoute(
+      builder: (buildCtx) => registerPage.RegisterPage().buildPage(null)));
 }

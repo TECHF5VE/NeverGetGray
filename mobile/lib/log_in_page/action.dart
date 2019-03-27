@@ -10,6 +10,8 @@ enum LogInAction {
   updateLogInInfo,
 
   initFromStorage,
+
+  onRegister,
 }
 
 class LogInActionCreator {
@@ -29,4 +31,6 @@ class LogInActionCreator {
   static Action updateLogInInfoAction() => Action(LogInAction.updateLogInInfo);
 
   static Action initFromStorageAction(Map<String, String> data) => Action(LogInAction.initFromStorage, payload: data);
+
+  static Action onRegisterAction() => Action(LogInAction.onRegister);
 }

@@ -1,61 +1,63 @@
 import 'package:flutter/material.dart';
 import 'package:fish_redux/fish_redux.dart';
 
-import 'action.dart';
 import 'state.dart';
+import 'action.dart';
 
-Widget buildView(LogInState state, Dispatch dispatch, ViewService viewService) {
+Widget buildView(
+    RegisterState state, Dispatch dispatch, ViewService viewService) {
   return Scaffold(
-    appBar: null,
-    body: _buildBody(state, dispatch, viewService),
     resizeToAvoidBottomPadding: true,
+    appBar: AppBar(
+      iconTheme: IconThemeData(color: Colors.black),
+      title: Text(
+        'Register',
+        style: TextStyle(color: Colors.black),
+      ),
+      backgroundColor: Color.fromARGB(255, 246, 246, 246),
+      elevation: 0,
+    ),
+    body: _buildBody(state, dispatch, viewService),
   );
 }
 
 Widget _buildBody(
-    LogInState state, Dispatch dispatch, ViewService viewService) {
-  final widgetList = <Widget>[
+    RegisterState state, Dispatch dispatch, ViewService viewService) {
+  final widgets = <Widget>[
     Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           Padding(
-            padding: EdgeInsets.only(top: 100, left: 30, right: 30, bottom: 60),
-            child: Text(
-              'Never Get Grey',
-              style: TextStyle(fontSize: 38, color: Colors.blue),
-            ),
+            child: _buildFileds(
+                'Input user name',
+                Icons.portrait,
+                false,
+                state.userName,
+                () => dispatch(RegisterActionCreator.inputRefreshAction())),
+            padding: EdgeInsets.only(top: 36),
           ),
-          _buildFileds('Input user name', Icons.portrait, false, state.userName,
-              () => dispatch(LogInActionCreator.updateLogInInfoAction())),
           _buildFileds('Input password', Icons.lock_open, true, state.password,
-              () => dispatch(LogInActionCreator.updateLogInInfoAction())),
+              () => dispatch(RegisterActionCreator.inputRefreshAction())),
           _buildFileds(
               'Input private server\'s IP address / domain name',
               Icons.network_check,
               false,
               state.serverIP,
-              () => dispatch(LogInActionCreator.updateLogInInfoAction())),
+              () => dispatch(RegisterActionCreator.inputRefreshAction())),
           _buildFileds(
               'Input private server\'s port number',
               Icons.confirmation_number,
               false,
               state.serverPort,
-              () => dispatch(LogInActionCreator.updateLogInInfoAction()),
+              () => dispatch(RegisterActionCreator.inputRefreshAction()),
               numberOnly: true),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: <Widget>[
-              Padding(
-                child: InkWell(
-                  child: Text('register',
-                      style: TextStyle(color: Colors.blue, fontSize: 16)),
-                  onTap: () => dispatch(LogInActionCreator.onRegisterAction()),
-                ),
-                padding: EdgeInsets.only(right: 32),
-              ),
-            ],
+          _buildFileds(
+            'Input private server\'s key',
+            Icons.vpn_key,
+            false,
+            state.privateKey,
+            () => dispatch(RegisterActionCreator.inputRefreshAction()),
           ),
           Container(
             padding: EdgeInsets.only(top: 40),
@@ -69,32 +71,34 @@ Widget _buildBody(
                 child: Padding(
                   padding: EdgeInsets.all(16.0),
                   child: Text(
-                    'Log In',
+                    'Register',
                     style: TextStyle(fontSize: 16.0),
                   ),
                 ),
                 onPressed: _buttonEnable(state)
-                    ? () => dispatch(LogInActionCreator.onLogInAction(
-                        userName: state.userName.text,
-                        password: state.password.text,
-                        ipAddr: state.serverIP.text,
-                        port: state.serverPort.text))
+                    ? () => dispatch(RegisterActionCreator.onRegisterAction(
+                          userName: state.userName.text,
+                          password: state.password.text,
+                          ipAddr: state.serverIP.text,
+                          port: state.serverPort.text,
+                          privateKey: state.privateKey.text,
+                        ))
                     : null,
               ),
             ),
           ),
-        ]),
+        ])
   ];
 
   if (state.isWaiting) {
-    widgetList.add(_buildCircularProgressIndicator());
+    widgets.add(_buildCircularProgressIndicator());
   }
 
   return LayoutBuilder(
     builder: (ctx, constraints) {
       return SingleChildScrollView(
           child: ConstrainedBox(
-        child: Stack(children: widgetList),
+        child: Stack(children: widgets),
         constraints: !state.isWaiting
             ? BoxConstraints(minHeight: constraints.maxHeight)
             : BoxConstraints(maxHeight: constraints.maxHeight),
@@ -117,7 +121,7 @@ Widget _buildCircularProgressIndicator() {
             CircularProgressIndicator(),
             Padding(
               child: Text(
-                'Log In ...',
+                'Register ...',
                 style: TextStyle(
                     color: Colors.blue,
                     fontSize: 16,
@@ -166,9 +170,10 @@ bool _textFieldValidate(String text) {
   return text != null && text.isNotEmpty;
 }
 
-bool _buttonEnable(LogInState state) {
+bool _buttonEnable(RegisterState state) {
   return _textFieldValidate(state.userName.text) &&
       _textFieldValidate(state.password.text) &&
       _textFieldValidate(state.serverIP.text) &&
-      _textFieldValidate(state.serverPort.text);
+      _textFieldValidate(state.serverPort.text) &&
+      _textFieldValidate(state.privateKey.text);
 }
