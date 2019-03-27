@@ -9,7 +9,7 @@ import '../music_player_page/play_controller_component/component.dart';
 import '../play_list_page/component.dart';
 import '../setting_page/component.dart';
 
-class MainMenuPage extends Page<PageState, Map<String, dynamic>> {
+class MainMenuPage extends Page<PageState, Map<String, String>> {
   MainMenuPage()
     : super(
       initState: initState,

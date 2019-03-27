@@ -19,6 +19,12 @@ class PageState implements Cloneable<PageState> {
   num imageAngle;
   Timer timer;
   List<PlayListItemState> playListItems;
+  
+  String userName;
+  String password;
+  String ipAddr;
+  String port;
+  String authKey;
 
   @override
   PageState clone() {
@@ -27,19 +33,29 @@ class PageState implements Cloneable<PageState> {
     ..coverUri = this.coverUri
     ..imageAngle = this.imageAngle
     ..timer = this.timer
-    ..playListItems = playListItems;
+    ..playListItems = this.playListItems
+    ..userName = this.userName
+    ..password = this.password
+    ..ipAddr = this.ipAddr
+    ..port = this.port
+    ..authKey = this.authKey;
 
     return newState;
   }
 }
 
-PageState initState(Map<String, dynamic> args) {
+PageState initState(Map<String, String> args) {
   return PageState()
   ..currentTagType = TagType.MusicPlayer
   ..coverUri = 'https://i.imgur.com/jg6lMnv.png'
   ..timer = null
   ..imageAngle = 0.0
-  ..playListItems = [];
+  ..playListItems = []
+  ..userName = args['userName']
+  ..password = args['password']
+  ..ipAddr = args['ipAddr']
+  ..port = args['port']
+  ..authKey = args['authKey'];
 }
 
 class CoverConnector extends ConnOp<PageState, CoverState> {
