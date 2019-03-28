@@ -1,9 +1,10 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 import 'action.dart';
 import 'state.dart';
+
+import 'package:never_get_gray_mobile/unit/network.dart';
 
 Effect<RegisterState> buildEffect() {
   return combineEffects(<Object, Effect<RegisterState>>{
@@ -11,32 +12,35 @@ Effect<RegisterState> buildEffect() {
   });
 }
 
-void _onRegister(Action action, Context<RegisterState> ctx) {
+void _onRegister(Action action, Context<RegisterState> ctx) async {
   final logInInfo = action.payload as Map<String, String>;
   // final apiPath = logInInfo['ipAddr'] + 'session:' + logInInfo['port'];
-  final apiPath = logInInfo['ipAddr'] + '/userinfo';
+  // final apiPath = logInInfo['ipAddr'] + '/userinfo';
 
   ctx.dispatch(RegisterActionCreator.registerPendingAction());
 
-  new Future.delayed(const Duration(microseconds: 2000000), () async {
-    try {
-      final response = await Dio().post(apiPath, data: {
-        'username': logInInfo['userName'],
-        'password': logInInfo['password'],
-        'private_key': logInInfo['privateKey'],
-      });
-      if (response.data['code'] == '200') {
-        ctx.dispatch(RegisterActionCreator.registerSuccesAction());
-        _showSuccessDialog('Register success.', ctx);
-      } else {
-        _showFailedDialog('Invalid user name/password/private key.', ctx);
-      }
-    } catch (e) {
-      // print(e);
-      _showFailedDialog(
-          'Invalid private server IP address or port number.', ctx);
+  try {
+    // final response = await Dio().post(apiPath, data: {
+    //   'username': logInInfo['userName'],
+    //   'password': logInInfo['password'],
+    //   'private_key': logInInfo['privateKey'],
+    // });
+    final response = await NetWorkUnit.post(
+        logInInfo['ipAddr'], 'userinfo', logInInfo['port'], null, {
+      'username': logInInfo['userName'],
+      'password': logInInfo['password'],
+      'private_key': logInInfo['privateKey'],
+    });
+    if (response.data['code'] == '200') {
+      ctx.dispatch(RegisterActionCreator.registerSuccesAction());
+      _showSuccessDialog('Register success.', ctx);
+    } else {
+      _showFailedDialog('Invalid user name/password/private key.', ctx);
     }
-  });
+  } catch (e) {
+    // print(e);
+    _showFailedDialog('Invalid private server IP address or port number.', ctx);
+  }
 }
 
 void _showFailedDialog(String message, Context<RegisterState> ctx) {

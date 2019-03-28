@@ -69,7 +69,7 @@ Return:
 ## Playlist Info API
 
 ```json
-GET /api/playlists/auth_key={auth_key}
+GET /api/playlists?auth_key={auth_key}
 
 Body:
 {}

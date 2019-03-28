@@ -1,17 +1,17 @@
 import 'package:fish_redux/fish_redux.dart';
+import '../../songs_list_page/songs_list_item/state.dart';
 
 class PlayListItemState implements Cloneable<PlayListItemState> {
-  String uid;
+  int uid;
   String name;
-  String album;
-  // List<>
+  List<SongsListItemState> songs;
 
   @override
   PlayListItemState clone() {
     final newState = PlayListItemState()
     ..uid = this.uid
     ..name = this.name
-    ..album = this.album;
+    ..songs = this.songs;
 
     return newState;
   }

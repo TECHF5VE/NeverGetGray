@@ -2,6 +2,7 @@ import 'package:fish_redux/fish_redux.dart';
 
 import 'state.dart';
 import 'view.dart';
+import 'effect.dart';
 import 'reducer.dart';
 
 import '../music_player_page/cover_component/component.dart';
@@ -13,7 +14,7 @@ class MainMenuPage extends Page<PageState, Map<String, String>> {
   MainMenuPage()
     : super(
       initState: initState,
-      effect: null,
+      effect: buildEffect(),
       reducer: buildReducer(),
       view: buildView,
       dependencies : Dependencies<PageState>(

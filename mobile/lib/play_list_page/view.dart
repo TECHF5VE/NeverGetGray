@@ -26,14 +26,15 @@ Widget buildView(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
               IconButton(icon: Icon(Icons.add), onPressed: () {}, iconSize: 32,),
-              IconButton(icon: Icon(Icons.filter_list), onPressed: () {}, padding: EdgeInsets.only(right: 32), iconSize: 32),
+              Padding(child: IconButton(icon: Icon(Icons.filter_list), onPressed: () {}, iconSize: 32), padding: EdgeInsets.only(right: 16),),
             ],),
 
             Container(
               child: Expanded(
                   child: Container(
                     padding: EdgeInsets.only(top: 0),
-                    child: ListView.builder(
+                    child: ListView.separated(
+                      separatorBuilder: (ctx, index) => Divider(height: 1, color: Colors.grey, indent: 24,),
                       itemBuilder: adapter.itemBuilder,
                       itemCount: adapter.itemCount,
                 ),

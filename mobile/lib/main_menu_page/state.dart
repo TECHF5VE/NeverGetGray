@@ -26,6 +26,8 @@ class PageState implements Cloneable<PageState> {
   String port;
   String authKey;
 
+  bool isWaiting;
+
   @override
   PageState clone() {
     var newState = PageState()
@@ -38,7 +40,8 @@ class PageState implements Cloneable<PageState> {
     ..password = this.password
     ..ipAddr = this.ipAddr
     ..port = this.port
-    ..authKey = this.authKey;
+    ..authKey = this.authKey
+    ..isWaiting = this.isWaiting;
 
     return newState;
   }
@@ -55,7 +58,8 @@ PageState initState(Map<String, String> args) {
   ..password = args['password']
   ..ipAddr = args['ipAddr']
   ..port = args['port']
-  ..authKey = args['authKey'];
+  ..authKey = args['authKey']
+  ..isWaiting = false;
 }
 
 class CoverConnector extends ConnOp<PageState, CoverState> {

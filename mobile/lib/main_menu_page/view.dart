@@ -28,7 +28,7 @@ Widget buildView(
     PageState pageState, Dispatch dispatch, ViewService viewService) {
   return Scaffold(
     appBar: _appBar[pageState.currentTagType],
-    body: _buildBody(pageState, dispatch, viewService),
+    body: _buildBodyStack(pageState, dispatch, viewService),
     bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(
@@ -52,6 +52,19 @@ Widget buildView(
     floatingActionButton: null,
     backgroundColor: Color.fromARGB(255, 250, 250, 250),
   );
+}
+
+Widget _buildBodyStack(
+    PageState pageState, Dispatch dispatch, ViewService viewService) {
+      final widgets = <Widget>[
+        _buildBody(pageState, dispatch, viewService),
+      ];
+
+    if (pageState.isWaiting) {
+      widgets.add(_buildCircularProgressIndicator('Fetch play lists ...'));
+    }
+
+    return Stack(children: widgets,);
 }
 
 Widget _buildBody(
@@ -116,4 +129,33 @@ Widget _buildPlayList(
 Widget _buildSetting(
     PageState pageState, Dispatch dispatch, ViewService viewService) {
   return viewService.buildComponent('setting');
+}
+
+Widget _buildCircularProgressIndicator(String message) {
+  return Stack(
+    children: [
+      Opacity(
+        opacity: 0.3,
+        child: const ModalBarrier(dismissible: false, color: Colors.grey),
+      ),
+      Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            CircularProgressIndicator(),
+            Padding(
+              child: Text(
+                message,
+                style: TextStyle(
+                    color: Colors.blue,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600),
+              ),
+              padding: EdgeInsets.only(top: 32),
+            ),
+          ],
+        ),
+      ),
+    ],
+  );
 }

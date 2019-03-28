@@ -6,7 +6,7 @@ import 'state.dart';
 Widget buildView(
     PlayListItemState state, Dispatch dispatch, ViewService viewService) {
   return ListTile(
-    contentPadding: EdgeInsets.only(top: 24, left: 32, right: 16, bottom: 24),
+    contentPadding: EdgeInsets.only(top: 16, left: 32, right: 16, bottom: 24),
     onTap: () {},
     leading: Container(
       width: 72,
@@ -15,19 +15,19 @@ Widget buildView(
           shape: BoxShape.rectangle,
           image: DecorationImage(
             fit: BoxFit.cover,
-            image: NetworkImage(state.album),
+            image: NetworkImage(state.songs.isEmpty ? 'https://i.imgur.com/zJCOw.jpg' : state.songs[0].albumImg),
           )),
     ),
     title: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(state.name),
-        Text('0 songs'),
+        Text('${state.songs.length} songs'),
       ],
     ),
     trailing: Icon(
       Icons.chevron_right,
-      size: 64,
+      size: 36,
       color: Colors.grey,
     ),
   );
