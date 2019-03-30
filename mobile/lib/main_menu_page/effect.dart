@@ -75,10 +75,10 @@ void _init(Action action, Context<PageState> ctx) async {
       Fluttertoast.showToast(
         msg:
             'Failed to get play list from server, app will run under offline mode.',
-        toastLength: Toast.LENGTH_SHORT,
+        toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM,
-        timeInSecForIos: 2,
-        backgroundColor: Colors.grey,
+        timeInSecForIos: 5,
+        backgroundColor: Color.fromRGBO(240, 240, 240, 30),
         textColor: Colors.white,
         fontSize: 16.0,
       );
