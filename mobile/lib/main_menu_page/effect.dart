@@ -5,6 +5,7 @@ import 'package:never_get_gray_mobile/songs_list_page/songs_list_item/state.dart
 
 import 'action.dart';
 import 'state.dart';
+import 'stfstate.dart';
 
 import 'package:never_get_gray_mobile/unit/network.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -15,10 +16,20 @@ import '../unit/global_store.dart';
 Effect<PageState> buildEffect() {
   return combineEffects(<Object, Effect<PageState>>{
     Lifecycle.initState: _init,
+    Lifecycle.dispose: _dispose,
   });
 }
 
 void _init(Action action, Context<PageState> ctx) async {
+  final tabController =
+      TabController(vsync: ctx.stfState as PageStfState, length: 3);
+
+  tabController.addListener(() => ctx.dispatch(
+      PageActionCreator.onTabChangeAction(
+          TagType.values[tabController.index])));
+
+  ctx.dispatch(PageActionCreator.updateTabController(tabController));
+
   ctx.dispatch(PageActionCreator.initPendingAction());
 
   await FlutterCachedMusicPlayer.initializeAudioCache();
@@ -109,4 +120,8 @@ void _init(Action action, Context<PageState> ctx) async {
   }
 
   return;
+}
+
+void _dispose(Action action, Context<PageState> ctx) async {
+  ctx.state.tabController.dispose();
 }

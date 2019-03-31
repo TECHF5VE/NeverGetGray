@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:fish_redux/fish_redux.dart';
+import 'package:flutter/material.dart';
 import '../music_player_page/cover_component/state.dart';
 import '../music_player_page/play_controller_component/state.dart';
 import '../play_list_page/state.dart';
@@ -20,6 +21,7 @@ class PageState implements Cloneable<PageState> {
   num imageAngle;
   Timer timer;
   List<PlayListItemState> playListItems;
+  TabController tabController; 
   
   bool isWaiting;
 
@@ -31,7 +33,8 @@ class PageState implements Cloneable<PageState> {
     ..imageAngle = this.imageAngle
     ..timer = this.timer
     ..playListItems = this.playListItems
-    ..isWaiting = this.isWaiting;
+    ..isWaiting = this.isWaiting
+    ..tabController = this.tabController;
 
     return newState;
   }

@@ -11,6 +11,7 @@ Reducer<PageState> buildReducer() {
     PageAction.initPending: _initPendingReducer,
     PageAction.initSuccess: _initSuccessReducer,
     PageAction.updatePlayList: _updatePlayListReducer,
+    PageAction.updateTabController: _updateTabControllerReducer,
   });
 }
 
@@ -47,4 +48,9 @@ PageState _updatePlayListReducer(PageState state, Action action) {
   final newState = state.clone();
   newState.playListItems = action.payload;
   return newState;
+}
+
+PageState _updateTabControllerReducer(PageState state, Action action) {
+  final newState = state.clone();
+  return newState..tabController = action.payload;
 }
