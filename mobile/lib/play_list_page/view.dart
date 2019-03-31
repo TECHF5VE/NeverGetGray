@@ -6,21 +6,31 @@ import 'state.dart';
 Widget buildView(
     PlayListState state, Dispatch dispatch, ViewService viewService) {
   final adapter = viewService.buildAdapter();
-  return new DefaultTabController(
-      length: 4,
-      child: Scaffold(
-          resizeToAvoidBottomPadding: false,
-          appBar: TabBar(
-            indicatorColor: Colors.blue,
-            labelColor: Colors.black,
-            tabs: <Widget>[
-              Tab(text: 'Custom'),
-              Tab(text: 'Server'),
-              Tab(text: 'Albums'),
-              Tab(text: 'Artists'),
-            ],
-          ),
-          body: _buildBody(adapter, viewService)));
+  return Scaffold(
+    appBar: AppBar(
+      title: Text(
+        'Play List',
+        style: TextStyle(color: Colors.black),
+      ),
+      backgroundColor: Color.fromARGB(255, 246, 246, 246),
+      elevation: 0,
+    ),
+    body: new DefaultTabController(
+        length: 4,
+        child: Scaffold(
+            resizeToAvoidBottomPadding: false,
+            appBar: TabBar(
+              indicatorColor: Colors.blue,
+              labelColor: Colors.black,
+              tabs: <Widget>[
+                Tab(text: 'Custom'),
+                Tab(text: 'Server'),
+                Tab(text: 'Albums'),
+                Tab(text: 'Artists'),
+              ],
+            ),
+            body: _buildBody(adapter, viewService))),
+  );
 }
 
 Widget _buildBody(ListAdapter adapter, ViewService viewService) {

@@ -3,33 +3,12 @@ import 'package:flutter/material.dart';
 
 import 'state.dart';
 
-final _appBar = <TagType, PreferredSizeWidget>{
-  TagType.MusicPlayer: null,
-  TagType.PlayList: AppBar(
-    title: Text(
-      'Play List',
-      style: TextStyle(color: Colors.black),
-    ),
-    backgroundColor: Color.fromARGB(255, 246, 246, 246),
-    elevation: 0,
-  ),
-  TagType.Settings: AppBar(
-    title: Text(
-      'Settings',
-      style: TextStyle(color: Colors.black),
-    ),
-    backgroundColor: Color.fromARGB(255, 246, 246, 246),
-    elevation: 0,
-  ),
-};
-
 Widget buildView(
     PageState pageState, Dispatch dispatch, ViewService viewService) {
   return DefaultTabController(
     length: 3,
     child: Scaffold(
       resizeToAvoidBottomPadding: false,
-      appBar: _appBar[pageState.currentTagType],
       body: TabBarView(
         children: <Widget>[
           _buildBodyStack(
