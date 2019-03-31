@@ -2,8 +2,8 @@ import 'package:fish_redux/fish_redux.dart';
 // import 'package:never_get_gray_mobile/play_list_page/play_list_item/state.dart';
 
 import '../state.dart';
+import 'effect.dart';
 import '../play_list_item/component.dart';
-// import '../../main_menu_page/state.dart';
 
 class PlayListAdapter extends DynamicFlowAdapter<PlayListState> {
   PlayListAdapter()
@@ -13,6 +13,7 @@ class PlayListAdapter extends DynamicFlowAdapter<PlayListState> {
       },
       connector: _PlayListConnector(),
       reducer: null,
+      effect: buildEffect(),
     );
 }
 

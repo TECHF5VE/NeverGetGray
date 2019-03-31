@@ -20,12 +20,6 @@ class PageState implements Cloneable<PageState> {
   Timer timer;
   List<PlayListItemState> playListItems;
   
-  String userName;
-  String password;
-  String ipAddr;
-  String port;
-  String authKey;
-
   bool isWaiting;
 
   @override
@@ -36,11 +30,6 @@ class PageState implements Cloneable<PageState> {
     ..imageAngle = this.imageAngle
     ..timer = this.timer
     ..playListItems = this.playListItems
-    ..userName = this.userName
-    ..password = this.password
-    ..ipAddr = this.ipAddr
-    ..port = this.port
-    ..authKey = this.authKey
     ..isWaiting = this.isWaiting;
 
     return newState;
@@ -54,11 +43,6 @@ PageState initState(Map<String, String> args) {
   ..timer = null
   ..imageAngle = 0.0
   ..playListItems = []
-  ..userName = args['userName']
-  ..password = args['password']
-  ..ipAddr = args['ipAddr']
-  ..port = args['port']
-  ..authKey = args['authKey']
   ..isWaiting = false;
 }
 

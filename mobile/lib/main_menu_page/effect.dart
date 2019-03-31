@@ -9,6 +9,8 @@ import 'state.dart';
 import 'package:never_get_gray_mobile/unit/network.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import '../unit/global_store.dart';
+
 Effect<PageState> buildEffect() {
   return combineEffects(<Object, Effect<PageState>>{
     Lifecycle.initState: _init,
@@ -18,9 +20,11 @@ Effect<PageState> buildEffect() {
 void _init(Action action, Context<PageState> ctx) async {
   ctx.dispatch(PageActionCreator.initPendingAction());
   try {
-    final response =
-        await NetWorkUnit.get(ctx.state.ipAddr, 'playlists', ctx.state.port, {
-      'auth_key': ctx.state.authKey,
+    final response = await NetWorkUnit.get(
+        GlobalStoreUtil.globalState.getState().ipAddr,
+        'playlists',
+        GlobalStoreUtil.globalState.getState().port, {
+      'auth_key': GlobalStoreUtil.globalState.getState().authKey,
     });
 
     if (response.data['code'] == '200') {
@@ -51,10 +55,10 @@ void _init(Action action, Context<PageState> ctx) async {
           try {
             final firstSong = playListItem.songs[0];
             final albumResponse = await NetWorkUnit.get(
-              ctx.state.ipAddr,
+              GlobalStoreUtil.globalState.getState().ipAddr,
               'songs/${firstSong.uid}',
-              ctx.state.port,
-              {'auth_key': ctx.state.authKey},
+              GlobalStoreUtil.globalState.getState().port,
+              {'auth_key': GlobalStoreUtil.globalState.getState().authKey},
             );
             if (albumResponse.data['code'] == '200') {
               firstSong.albumImg = albumResponse.data['data']['album_img'];

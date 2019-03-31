@@ -1,3 +1,4 @@
+import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 
 // import 'main_menu_page/page.dart';
@@ -14,5 +15,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) =>
       // MaterialApp(home: MainMenuPage().buildPage(<String, dynamic> {}));
-      MaterialApp(home: LogInPage().buildPage(<String, dynamic> {}));
+      AppProvider(
+        child: MaterialApp(home: LogInPage().buildPage(<String, dynamic>{})),
+      );
 }
