@@ -26,6 +26,5 @@ class MainMenuPage extends Page<PageState, Map<String, String>> {
           'setting' : SettingConnector() + SettingComponent(),
         }
       ),
-      middlewares : []
     );
 }

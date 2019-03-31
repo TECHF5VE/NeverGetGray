@@ -28,10 +28,10 @@ class FlutterCachedMusicPlayerPlugin(val registrar: Registrar): MethodCallHandle
         "initializeAudioCache" -> {
           Log.i("plugin", "brefore_initialize")
           AndriodVideoCacheWrapper.initialize(registrar.context())
+          result.success(null)
         }
         "prepare" -> {
           Log.i("plugin", "brefore_prepare")
-          Log.i("plugin", call.argument<String>("url")!!);
           ExoPlayerWrapper.prepare(call.argument<String>("url")!!, registrar.context(), registrar.activity())
           result.success(null)
           Log.i("plugin", call.argument<String>("url")!!);

@@ -7,14 +7,14 @@ import '../play_list_item/component.dart';
 
 class PlayListAdapter extends DynamicFlowAdapter<PlayListState> {
   PlayListAdapter()
-    : super(
-      pool: <String, Component<Object>> {
-        'playListItem' : PlayListItemComponent(),
-      },
-      connector: _PlayListConnector(),
-      reducer: null,
-      effect: buildEffect(),
-    );
+      : super(
+          pool: <String, Component<Object>>{
+            'playListItem': PlayListItemComponent(),
+          },
+          connector: _PlayListConnector(),
+          reducer: null,
+          effect: buildEffect(),
+        );
 }
 
 class _PlayListConnector implements Connector<PlayListState, List<ItemBean>> {
@@ -22,8 +22,8 @@ class _PlayListConnector implements Connector<PlayListState, List<ItemBean>> {
   List<ItemBean> get(PlayListState state) {
     if (state.playListItems?.isNotEmpty == true) {
       return state.playListItems
-                  .map((data) => ItemBean('playListItem', data))
-                  .toList(growable: true);
+          .map((data) => ItemBean('playListItem', data))
+          .toList(growable: true);
     } else {
       return <ItemBean>[
         // ItemBean('playListItem', PlayListItemState()..songs=[]..name='test1'..uid=0),
@@ -34,4 +34,10 @@ class _PlayListConnector implements Connector<PlayListState, List<ItemBean>> {
 
   @override
   void set(PlayListState state, List<ItemBean> substate) {}
+
+  @override
+  subReducer(reducer) {
+    // TODO: implement subReducer
+    return null;
+  }
 }

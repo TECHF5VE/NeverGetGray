@@ -6,6 +6,7 @@ import '../music_player_page/play_controller_component/state.dart';
 import '../play_list_page/state.dart';
 import '../play_list_page/play_list_item/state.dart';
 import '../setting_page/state.dart';
+import '../unit/global_store.dart';
 
 enum TagType {
   MusicPlayer,
@@ -67,7 +68,8 @@ class CoverConnector extends ConnOp<PageState, CoverState> {
 class PlayControllerConnector extends ConnOp<PageState, PlayControllerState> {
   @override
   PlayControllerState get(PageState state) {
-    return PlayControllerState();
+    return PlayControllerState()
+      ..playStatus = GlobalStoreUtil.globalState.getState().playStatus;
   }
 
   @override

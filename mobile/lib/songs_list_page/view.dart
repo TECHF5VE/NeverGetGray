@@ -52,6 +52,21 @@ Widget buildView(
                     ],
                   ),
                 ),
+                Expanded(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      Padding(
+                        child: IconButton(
+                            icon: Icon(Icons.filter_list),
+                            onPressed: () {},
+                            iconSize: 26),
+                        padding: EdgeInsets.only(right: 0, top: 72),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),

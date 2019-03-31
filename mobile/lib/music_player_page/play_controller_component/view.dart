@@ -1,7 +1,9 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 
+import '../../unit/global_store.dart';
 import 'state.dart';
+import 'action.dart';
 import 'progress_slider.dart';
 
 const _iconSize = 54.0;
@@ -26,9 +28,13 @@ Widget buildView(
                   padding: const EdgeInsets.all(0),
                 ),
                 IconButton(
-                  icon: Icon(Icons.play_arrow),
+                  icon: state.playStatus != PlayStatus.Paused ? Icon(Icons.pause) : Icon(Icons.play_arrow),
                   iconSize: _iconSize,
-                  onPressed: () {},
+                  onPressed: () {
+                    final newState = state.playStatus == PlayStatus.Paused ? PlayStatus.Playing : PlayStatus.Paused; 
+                    dispatch(PlayControllerActionCreator.onUpdatePlayStatusAction(newState));
+                    GlobalStoreUtil.globalState.dispatch(AppStoreActionCreate.updatePlayStatus(newState));
+                  },
                   padding: const EdgeInsets.all(0),
                 ),
                 IconButton(

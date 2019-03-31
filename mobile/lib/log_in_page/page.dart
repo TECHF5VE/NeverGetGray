@@ -13,6 +13,5 @@ class LogInPage extends Page<LogInState, Map<String, dynamic>> {
       reducer: buildReducer(),
       view: buildView,
       dependencies : null,
-      middlewares : []
     );
 }

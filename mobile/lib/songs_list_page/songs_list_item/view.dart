@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fish_redux/fish_redux.dart';
 
 import 'state.dart';
+import 'action.dart';
 
 Widget buildView(
     SongsListItemState state, Dispatch dispatch, ViewService viewService) {
@@ -36,6 +37,6 @@ Widget buildView(
         ),
       ],
     ),
-    onTap: () {},
+    onTap: () => dispatch(SongsListItemActionCreator.onPlaySongAction(state.index)),
   );
 }

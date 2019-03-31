@@ -8,16 +8,15 @@ import '../music_player_page/play_controller_component/component.dart';
 class SongsListPage extends Page<PlayListItemState, Map<String, dynamic>> {
   SongsListPage()
       : super(
-            initState: initState,
-            effect: null,
-            reducer: null,
-            view: buildView,
-            dependencies: Dependencies<PlayListItemState>(
-                adapter: SongsListAdapter(),
-                slots: <String, Dependent<PlayListItemState>>{
-                  'play_controller' : PlayControllerConnector() + PlayControllerComponent(),
-                }),
-            middlewares: []);
+          initState: initState,
+          effect: null,
+          reducer: null,
+          view: buildView,
+          dependencies: Dependencies<PlayListItemState>(
+              adapter: SongsListAdapter(),
+              slots: <String, Dependent<PlayListItemState>>{
+                'play_controller':
+                    PlayControllerConnector() + PlayControllerComponent(),
+              }),
+        );
 }
-
-

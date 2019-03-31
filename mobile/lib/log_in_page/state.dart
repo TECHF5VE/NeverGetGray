@@ -28,8 +28,8 @@ LogInState initState(Map<String, dynamic> args) {
     ..password = (TextEditingController()
       ..text = '')
     ..serverIP = (TextEditingController()
-      ..text = '')
+      ..text = 'https://www.easy-mock.com/mock/5c9b493193944f200184f1d0/api')
     ..serverPort = (TextEditingController()
-      ..text = '')
+      ..text = '80')
     ..isWaiting = false;
 }

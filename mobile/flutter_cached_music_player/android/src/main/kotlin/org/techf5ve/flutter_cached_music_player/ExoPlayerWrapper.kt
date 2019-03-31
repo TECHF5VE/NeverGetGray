@@ -21,6 +21,14 @@ import com.google.android.exoplayer2.util.Util.getUserAgent
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.upstream.*
 import com.google.android.exoplayer2.util.Util;
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
+import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter
+
+
+
+
 
 
 object ExoPlayerWrapper {
@@ -61,12 +69,33 @@ object ExoPlayerWrapper {
 
     private fun newVideoSource(url: String, ctx: Context?, activity: Activity?): MediaSource {
 //        val bandwidthMeter = DefaultBandwidthMeter()
+//        val userAgent = Util.getUserAgent(activity, "AndroidVideoCache sample")
+//        val dataSourceFactory = DefaultDataSourceFactory(activity, userAgent, bandwidthMeter)
+//        val extractorsFactory = DefaultExtractorsFactory()
+//        return ExtractorMediaSource(Uri.parse(url), dataSourceFactory, extractorsFactory, null, null)
+
+//        val bandwidthMeter = DefaultBandwidthMeter()
 //        val userAgent = Util.getUserAgent(ctx, "Never Get Grey")
 //        val dataSourceFactory = DefaultDataSourceFactory(activity, userAgent, bandwidthMeter)
 //        val extractorsFactory = DefaultExtractorsFactory()
-//        return ExtractorMediaSource(Uri.parse(url), dataSourceFactory, extractorsFactory, )
+//        return ExtractorMediaSource(Uri.parse(url), dataSourceFactory, extractorsFactory, bandwidthMeter, userAgent)
+
+        val userAgent = Util.getUserAgent(ctx, "never-get-grey")
+        val httpDataSourceFactory = DefaultHttpDataSourceFactory(
+                userAgent,
+                null /* listener */,
+                DefaultHttpDataSource.DEFAULT_CONNECT_TIMEOUT_MILLIS,
+                DefaultHttpDataSource.DEFAULT_READ_TIMEOUT_MILLIS,
+                true /* allowCrossProtocolRedirects */
+        )
+
+        val dataSourceFactory = DefaultDataSourceFactory(
+                ctx, null,
+                httpDataSourceFactory
+        )/* listener */
+
         return ExtractorMediaSource
-                .Factory(DefaultDataSourceFactory(ctx, "never-get-grey"))
+                .Factory(dataSourceFactory)
                 .createMediaSource(Uri.parse(url));
     }
 

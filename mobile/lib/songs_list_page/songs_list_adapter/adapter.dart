@@ -33,5 +33,13 @@ class _SongsListConnector implements Connector<PlayListItemState, List<ItemBean>
   }
 
   @override
-  void set(PlayListItemState state, List<ItemBean> substate) {}
+  void set(PlayListItemState state, List<ItemBean> substate) {
+    print("32123");
+  }
+
+  @override
+  subReducer(reducer) {
+    // TODO: implement subReducer
+    return null;
+  }
 }

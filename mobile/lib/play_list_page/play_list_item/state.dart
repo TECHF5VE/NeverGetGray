@@ -1,6 +1,7 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:never_get_gray_mobile/music_player_page/play_controller_component/state.dart';
 import '../../songs_list_page/songs_list_item/state.dart';
+import '../../unit/global_store.dart';
 
 class PlayListItemState implements Cloneable<PlayListItemState> {
   int uid;
@@ -10,9 +11,9 @@ class PlayListItemState implements Cloneable<PlayListItemState> {
   @override
   PlayListItemState clone() {
     final newState = PlayListItemState()
-    ..uid = this.uid
-    ..name = this.name
-    ..songs = this.songs;
+      ..uid = this.uid
+      ..name = this.name
+      ..songs = this.songs;
 
     return newState;
   }
@@ -23,10 +24,13 @@ PlayListItemState initState(Map<String, dynamic> args) {
   return oldState;
 }
 
-class PlayControllerConnector extends ConnOp<PlayListItemState, PlayControllerState> {
+class PlayControllerConnector
+    extends ConnOp<PlayListItemState, PlayControllerState> {
   @override
   PlayControllerState get(PlayListItemState state) {
-    return PlayControllerState();
+    print(GlobalStoreUtil.globalState.getState().playStatus);
+    return PlayControllerState()
+      ..playStatus = GlobalStoreUtil.globalState.getState().playStatus;
   }
 
   @override

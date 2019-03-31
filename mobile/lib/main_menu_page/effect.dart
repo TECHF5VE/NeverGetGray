@@ -8,6 +8,7 @@ import 'state.dart';
 
 import 'package:never_get_gray_mobile/unit/network.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_cached_music_player/flutter_cached_music_player.dart';
 
 import '../unit/global_store.dart';
 
@@ -19,6 +20,9 @@ Effect<PageState> buildEffect() {
 
 void _init(Action action, Context<PageState> ctx) async {
   ctx.dispatch(PageActionCreator.initPendingAction());
+
+  await FlutterCachedMusicPlayer.initializeAudioCache();
+
   try {
     final response = await NetWorkUnit.get(
         GlobalStoreUtil.globalState.getState().ipAddr,
@@ -41,6 +45,8 @@ void _init(Action action, Context<PageState> ctx) async {
             ..name = songs['name']
             ..album = songs['album']
             ..albumImg = ''
+            ..index = 0
+            ..lyrics = ''
             ..artist = songs['artist']);
         }
 
