@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:fish_redux/fish_redux.dart';
 import '../../unit/global_store.dart';
 import '../../unit/network.dart';
@@ -24,7 +26,8 @@ void _onPlaySong(Action action, Context<SongsListItemState> ctx) async {
 
   try {
     if (ctx.state.albumImg == '') {
-      final response = await NetWorkUnit.get(ip, 'songs/${ctx.state.uid}', port, {
+      final response =
+          await NetWorkUnit.get(ip, 'songs/${ctx.state.uid}', port, {
         'auth_key': authKey,
       });
 
@@ -38,17 +41,29 @@ void _onPlaySong(Action action, Context<SongsListItemState> ctx) async {
       }
     }
 
-    final response = await NetWorkUnit.get(ip, 'stream/${ctx.state.uid}', port, {
+    final response =
+        await NetWorkUnit.get(ip, 'stream/${ctx.state.uid}', port, {
       'auth_key': authKey,
     });
 
     print(response);
+    await FlutterCachedMusicPlayer.stop();
     await FlutterCachedMusicPlayer.prepare(response.data['data']['stream_url']);
     await FlutterCachedMusicPlayer.play();
 
-    GlobalStoreUtil.globalState.dispatch(AppStoreActionCreate.updatePlayStatus(PlayStatus.Playing));
-    AppProvider.appBroadcast(ctx.context, PlayControllerActionCreator.updatePlayStatusWorkAroundAction(PlayStatus.Playing));
+    // FlutterCachedMusicPlayer.listenToBufferPercentStream((data) => print(data));
+
+    GlobalStoreUtil.globalState
+        .dispatch(AppStoreActionCreate.updatePlayStatus(PlayStatus.Playing));
+    AppProvider.appBroadcast(
+        ctx.context,
+        PlayControllerActionCreator.updatePlayStatusWorkAroundAction(
+            PlayStatus.Playing));
     // ctx.dispatch(PlayControllerActionCreator.updatePlayStatus(PlayStatus.Playing));
+    final timer = Timer.periodic(const Duration(milliseconds: 1000), (t) async {
+      print(await FlutterCachedMusicPlayer.currentPlayingPosition);
+      print(await FlutterCachedMusicPlayer.musicContentLength);
+    });
   } catch (e) {
     print(e);
   }

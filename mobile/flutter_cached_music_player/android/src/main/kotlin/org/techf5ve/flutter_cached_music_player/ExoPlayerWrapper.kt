@@ -4,12 +4,9 @@ import android.content.Context
 import android.app.Activity
 import android.net.Uri
 import android.util.Log
+import com.google.android.exoplayer2.*
 
-import com.google.android.exoplayer2.SimpleExoPlayer
 import org.techf5ve.flutter_cached_music_player.AndriodVideoCacheWrapper
-import com.google.android.exoplayer2.ExoPlayerFactory
-import com.google.android.exoplayer2.DefaultLoadControl
-import com.google.android.exoplayer2.LoadControl
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.trackselection.TrackSelector
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection
@@ -25,25 +22,33 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter
-
-
-
-
-
+import io.flutter.plugin.common.EventChannel
+import io.flutter.view.FlutterView
 
 object ExoPlayerWrapper {
     private var simpleExoPlayer: SimpleExoPlayer? = null
+    final val STERAM = BuildConfig.APPLICATION_ID + "/play_process_stream";
 
-    fun prepare(url: String, ctx: Context, activity: Activity) {
+    fun prepare(url: String, ctx: Context, activity: FlutterView) {
         val proxy = AndriodVideoCacheWrapper.prepare(url)
-
-        Log.i("pluginjj", proxy);
 
         if (simpleExoPlayer == null) {
             simpleExoPlayer = newSimpleExoPlayer(ctx)
+//            EventChannel(activity, STERAM).setStreamHandler(object: EventChannel.StreamHandler {
+//                override fun onListen(args: Any?, events: EventChannel.EventSink?) {
+//                     simpleExoPlayer!!.addListener(object: Player.EventListener {
+//
+//                     })//To change body of created functions use File | Settings | File Templates.
+//                }
+//
+//                override fun onCancel(p0: Any?) {
+//                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+//                }
+//
+//            })
         }
 
-        val videoSource = newVideoSource(proxy!!, ctx, activity)
+        val videoSource = newVideoSource(proxy!!, ctx)
         simpleExoPlayer?.prepare(videoSource)
     }
 
@@ -63,23 +68,17 @@ object ExoPlayerWrapper {
         simpleExoPlayer?.release()
     }
 
+    val duration: Long
+        get() = simpleExoPlayer!!.duration
+
+    val currentPosition: Long
+        get() = simpleExoPlayer!!.currentPosition
+
     private fun newSimpleExoPlayer(ctx: Context): SimpleExoPlayer {
         return ExoPlayerFactory.newSimpleInstance(ctx);
     }
 
-    private fun newVideoSource(url: String, ctx: Context?, activity: Activity?): MediaSource {
-//        val bandwidthMeter = DefaultBandwidthMeter()
-//        val userAgent = Util.getUserAgent(activity, "AndroidVideoCache sample")
-//        val dataSourceFactory = DefaultDataSourceFactory(activity, userAgent, bandwidthMeter)
-//        val extractorsFactory = DefaultExtractorsFactory()
-//        return ExtractorMediaSource(Uri.parse(url), dataSourceFactory, extractorsFactory, null, null)
-
-//        val bandwidthMeter = DefaultBandwidthMeter()
-//        val userAgent = Util.getUserAgent(ctx, "Never Get Grey")
-//        val dataSourceFactory = DefaultDataSourceFactory(activity, userAgent, bandwidthMeter)
-//        val extractorsFactory = DefaultExtractorsFactory()
-//        return ExtractorMediaSource(Uri.parse(url), dataSourceFactory, extractorsFactory, bandwidthMeter, userAgent)
-
+    private fun newVideoSource(url: String, ctx: Context?): MediaSource {
         val userAgent = Util.getUserAgent(ctx, "never-get-grey")
         val httpDataSourceFactory = DefaultHttpDataSourceFactory(
                 userAgent,
