@@ -23,13 +23,15 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
-  fish_redux: ^0.1.3
+  # fish_redux: ^0.1.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_cached_music_player:
     path: ./flutter_cached_music_player
+  fish_redux:
+    path: ../../fish-redux
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec

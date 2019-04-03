@@ -72,11 +72,15 @@ class PlayControllerConnector extends ConnOp<PageState, PlayControllerState> {
   @override
   PlayControllerState get(PageState state) {
     return PlayControllerState()
-      ..playStatus = GlobalStoreUtil.globalState.getState().playStatus;
+      ..playStatus = GlobalStoreUtil.globalState.getState().playStatus
+      ..playQueueMode = GlobalStoreUtil.globalState.getState().playQueueMode;
   }
 
   @override
-  void set(PageState state, PlayControllerState substate) {}
+  void set(PageState state, PlayControllerState substate) {
+    GlobalStoreUtil.globalState.dispatch(AppStoreActionCreate.updatePlayStatus(substate.playStatus));
+    GlobalStoreUtil.globalState.dispatch(AppStoreActionCreate.updatePlayQueueMode(substate.playQueueMode));
+  }
 }
 
 class PlayListConnector extends ConnOp<PageState, PlayListState> {

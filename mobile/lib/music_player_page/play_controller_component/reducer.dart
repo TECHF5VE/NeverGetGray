@@ -7,6 +7,7 @@ Reducer<PlayControllerState> buildReducer() {
   return asReducer(
     <Object, Reducer<PlayControllerState>> {
       PlayControllerAction.updatePlayStatus: _updatePlayStatusReducer,
+      PlayControllerAction.updatePlayQueueMode: _updatePlayQueueModeReducer,
     }
   );
 }
@@ -14,4 +15,9 @@ Reducer<PlayControllerState> buildReducer() {
 PlayControllerState _updatePlayStatusReducer(PlayControllerState state, Action action) {
   final newState = state.clone();
   return newState..playStatus = action.payload;
+}
+
+PlayControllerState _updatePlayQueueModeReducer(PlayControllerState state, Action action) {
+  final newState = state.clone();
+  return newState..playQueueMode = action.payload;
 }

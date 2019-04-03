@@ -50,15 +50,17 @@ void _init(Action action, Context<PageState> ctx) async {
       for (final playList in playLists) {
         List<SongsListItemState> songsListItems = [];
         final songsLists = playList['songs'];
+        var index = 0;
         for (final songs in songsLists) {
           songsListItems.add(SongsListItemState()
             ..uid = songs['uid']
             ..name = songs['name']
             ..album = songs['album']
             ..albumImg = ''
-            ..index = 0
+            ..index = index++
             ..lyrics = ''
-            ..artist = songs['artist']);
+            ..artist = songs['artist']
+            ..isPlaying = false);
         }
 
         playListItems.add(PlayListItemState()

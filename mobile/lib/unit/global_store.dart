@@ -5,7 +5,8 @@ import '../play_list_page/play_list_item/state.dart';
 enum PlayQueueMode {
   Sequence,
   Random,
-  Circle
+  Circle,
+  SingleLoop,
 }
 
 enum PlayStatus {
@@ -23,8 +24,10 @@ class AppState implements Cloneable<AppState> {
   PlayListItemState playList;
   List<SongsListItemState> playQueue;
   int playIndex;
+
   int songLength;
   int playingPosition;
+
   int bufferedLength;
 
   PlayQueueMode playQueueMode;
@@ -82,6 +85,7 @@ Reducer<AppState> _buildReducer() {
     AppStoreAction.updatePlayList: _updatePlayListReducer,
     AppStoreAction.updatePlayIndex: _updatePlayIndexReducer,
     AppStoreAction.updatePlayStatus: _updatePlayStatusReducer,
+    AppStoreAction.updatePlayQueueMode: _updatePlayQueueModeReducer,
   });
 }
 
@@ -98,22 +102,25 @@ AppState _updateGlobalInfoReducer(AppState state, Action action) {
 AppState _updatePlayListReducer(AppState state, Action action) {
   final payload = action.payload as PlayListItemState;
   final newState = state.clone();
-  return newState
-    ..playList = payload;
+  return newState..playList = payload;
 }
 
 AppState _updatePlayIndexReducer(AppState state, Action action) {
   final payload = action.payload as int;
   final newState = state.clone();
-  return newState
-    ..playingPosition = payload;
+  return newState..playIndex = payload;
 }
 
 AppState _updatePlayStatusReducer(AppState state, Action action) {
   final payload = action.payload as PlayStatus;
   final newState = state.clone();
-  return newState
-    ..playStatus = payload;
+  return newState..playStatus = payload;
+}
+
+AppState _updatePlayQueueModeReducer(AppState state, Action action) {
+  final payload = action.payload as PlayQueueMode;
+  final newState = state.clone();
+  return newState..playQueueMode = payload;
 }
 
 enum AppStoreAction {
@@ -121,6 +128,7 @@ enum AppStoreAction {
   updatePlayList,
   updatePlayIndex,
   updatePlayStatus,
+  updatePlayQueueMode,
 }
 
 class AppStoreActionCreate {
@@ -131,5 +139,7 @@ class AppStoreActionCreate {
   static Action updatePlayIndexAction(int index) =>
       Action(AppStoreAction.updatePlayIndex, payload: index);
   static Action updatePlayStatus(PlayStatus status) =>
-      Action(AppStoreAction.updatePlayStatus, payload: status);      
+      Action(AppStoreAction.updatePlayStatus, payload: status);
+  static Action updatePlayQueueMode(PlayQueueMode mode) =>
+      Action(AppStoreAction.updatePlayQueueMode, payload: mode);
 }

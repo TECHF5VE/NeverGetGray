@@ -17,7 +17,7 @@ class PlayListAdapter extends DynamicFlowAdapter<PlayListState> {
         );
 }
 
-class _PlayListConnector implements Connector<PlayListState, List<ItemBean>> {
+class _PlayListConnector extends ConnOp<PlayListState, List<ItemBean>> {
   @override
   List<ItemBean> get(PlayListState state) {
     if (state.playListItems?.isNotEmpty == true) {
@@ -33,11 +33,5 @@ class _PlayListConnector implements Connector<PlayListState, List<ItemBean>> {
   }
 
   @override
-  void set(PlayListState state, List<ItemBean> substate) {}
-
-  @override
-  subReducer(reducer) {
-    // TODO: implement subReducer
-    return null;
-  }
+  void set(PlayListState state, List<ItemBean> toDos) {}
 }

@@ -30,9 +30,13 @@ class PlayControllerConnector
   PlayControllerState get(PlayListItemState state) {
     print(GlobalStoreUtil.globalState.getState().playStatus);
     return PlayControllerState()
-      ..playStatus = GlobalStoreUtil.globalState.getState().playStatus;
+      ..playStatus = GlobalStoreUtil.globalState.getState().playStatus
+      ..playQueueMode = GlobalStoreUtil.globalState.getState().playQueueMode;
   }
 
   @override
-  void set(PlayListItemState state, PlayControllerState substate) {}
+  void set(PlayListItemState state, PlayControllerState substate) {
+    GlobalStoreUtil.globalState.dispatch(AppStoreActionCreate.updatePlayStatus(substate.playStatus));
+    GlobalStoreUtil.globalState.dispatch(AppStoreActionCreate.updatePlayQueueMode(substate.playQueueMode));
+  }
 }

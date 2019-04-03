@@ -1,5 +1,4 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:never_get_gray_mobile/music_player_page/play_controller_component/state.dart';
 
 class SongsListItemState implements Cloneable<SongsListItemState> {
   int uid;
@@ -9,6 +8,7 @@ class SongsListItemState implements Cloneable<SongsListItemState> {
   String albumImg;
   String lyrics;
   int index;
+  bool isPlaying;
 
   @override
   SongsListItemState clone() {
@@ -19,7 +19,8 @@ class SongsListItemState implements Cloneable<SongsListItemState> {
       ..album = this.album
       ..albumImg = this.albumImg
       ..lyrics = this.lyrics
-      ..index = 0;
+      ..index = this.index
+      ..isPlaying = this.isPlaying;
 
     return newState;
   }

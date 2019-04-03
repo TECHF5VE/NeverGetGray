@@ -5,11 +5,11 @@ import 'effect.dart';
 import 'reducer.dart';
 import 'view.dart';
 
-class SongsListItemComponent extends Component<SongsListItemState> {
+class SongsListItemComponent extends Component<SongsListItemState>{
   SongsListItemComponent() 
     :super(
-      reducer: buildReducer(),
-      effect: buildEffect(),
       view: buildView,
+      effect: buildEffect(),
+      reducer: buildReducer(),
     );
 }

@@ -6,15 +6,22 @@ enum SongsListItemAction {
   onPlaySong,
   updateAlbumImg,
   updateLyrics,
+  updateIsPlaying,
 }
 
 class SongsListItemActionCreator {
   static Action onPlaySongAction(int index) =>
       Action(SongsListItemAction.onPlaySong, payload: index);
 
-  static Action udpateAlbumImg(String albumImg) =>
-      Action(SongsListItemAction.updateAlbumImg, payload: albumImg);
+  static Action updateAlbumImgAction(String albumImg, int index) =>
+      Action(SongsListItemAction.updateAlbumImg,
+          payload: {'albumImg': albumImg, 'index': index});
 
-  static Action udpateLyrics(String lyrics) =>
-      Action(SongsListItemAction.updateLyrics, payload: lyrics);
+  static Action updateLyricsAction(String lyrics, int index) =>
+      Action(SongsListItemAction.updateLyrics,
+          payload: {'lyrics': lyrics, 'index': index});
+
+  static Action updateIsPlayingAction(bool isPlaying, int index) =>
+      Action(SongsListItemAction.updateIsPlaying,
+          payload: {'isPlaying': isPlaying, 'index': index});
 }

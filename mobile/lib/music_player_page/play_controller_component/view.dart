@@ -8,6 +8,13 @@ import 'progress_slider.dart';
 
 const _iconSize = 54.0;
 
+const _icons = [
+  Icons.format_list_bulleted,
+  Icons.all_inclusive,
+  Icons.loop,
+  Icons.repeat_one
+];
+
 Widget buildView(
     PlayControllerState state, Dispatch dispatch, ViewService viewService) {
   return Container(
@@ -24,23 +31,32 @@ Widget buildView(
                 IconButton(
                   icon: Icon(Icons.skip_previous),
                   iconSize: _iconSize,
-                  onPressed: () {},
+                  onPressed: () => dispatch(
+                      PlayControllerActionCreator.onPlayLastSongAction()),
                   padding: const EdgeInsets.all(0),
                 ),
                 IconButton(
-                  icon: state.playStatus != PlayStatus.Paused ? Icon(Icons.pause) : Icon(Icons.play_arrow),
+                  icon: state.playStatus != PlayStatus.Paused
+                      ? Icon(Icons.pause)
+                      : Icon(Icons.play_arrow),
                   iconSize: _iconSize,
                   onPressed: () {
-                    final newState = state.playStatus == PlayStatus.Paused ? PlayStatus.Playing : PlayStatus.Paused; 
-                    dispatch(PlayControllerActionCreator.onUpdatePlayStatusAction(newState));
-                    GlobalStoreUtil.globalState.dispatch(AppStoreActionCreate.updatePlayStatus(newState));
+                    final newState = state.playStatus == PlayStatus.Paused
+                        ? PlayStatus.Playing
+                        : PlayStatus.Paused;
+                    dispatch(
+                        PlayControllerActionCreator.onUpdatePlayStatusAction(
+                            newState));
+                    GlobalStoreUtil.globalState.dispatch(
+                        AppStoreActionCreate.updatePlayStatus(newState));
                   },
                   padding: const EdgeInsets.all(0),
                 ),
                 IconButton(
                   icon: Icon(Icons.skip_next),
                   iconSize: _iconSize,
-                  onPressed: () {},
+                  onPressed: () => dispatch(
+                      PlayControllerActionCreator.onPlayNextSongAction()),
                   padding: const EdgeInsets.all(0),
                 )
               ],
@@ -70,9 +86,12 @@ Widget buildView(
                 child: Row(
                   children: <Widget>[
                     IconButton(
-                      icon: Icon(Icons.repeat_one),
+                      icon: Icon(_icons[state.playQueueMode.index]),
                       iconSize: _iconSize - 30,
-                      onPressed: () {},
+                      onPressed: () => dispatch(PlayControllerActionCreator
+                          .onUpdatePlayQueueModeAction(PlayQueueMode.values[
+                              (state.playQueueMode.index + 1) %
+                                  PlayQueueMode.values.length])),
                       padding: const EdgeInsets.all(0),
                     ),
                     IconButton(
