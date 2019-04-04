@@ -6,10 +6,9 @@ import 'effect.dart';
 import 'reducer.dart';
 import 'stfstate.dart';
 
-import '../music_player_page/cover_component/component.dart';
-import '../music_player_page/play_controller_component/component.dart';
 import '../play_list_page/component.dart';
 import '../setting_page/component.dart';
+import '../music_player_page/component.dart';
 
 class MainMenuPage extends Page<PageState, Map<String, String>> {
   @override
@@ -24,8 +23,7 @@ class MainMenuPage extends Page<PageState, Map<String, String>> {
       dependencies : Dependencies<PageState>(
         adapter: null,
         slots: <String, Dependent<PageState>>{
-          'cover' : CoverConnector() + CoverComponent(),
-          'play_controller' : PlayControllerConnector() + PlayControllerComponent(),
+          'music_player': MusicPlayerConnector() + MusicPlayerComponent(),
           'play_list' : PlayListConnector() + PlayListComponent(),
           'setting' : SettingConnector() + SettingComponent(),
         }

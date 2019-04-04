@@ -88,9 +88,9 @@ Future _onPlayNextSong(Action action, Context<PlayControllerState> ctx) async {
     print(response);
 
     GlobalStoreUtil.globalState
-        .dispatch(AppStoreActionCreate.updatePlayIndexAction(nextSong.index));
+        .dispatch(AppStateActionCreator.updatePlayIndexAction(nextSong.index));
     GlobalStoreUtil.globalState
-        .dispatch(AppStoreActionCreate.updatePlayStatus(PlayStatus.Playing));
+        .dispatch(AppStateActionCreator.updatePlayStatus(PlayStatus.Playing));
 
     await FlutterCachedMusicPlayer.stop();
     await FlutterCachedMusicPlayer.prepare(response.data['data']['stream_url']);
@@ -135,9 +135,9 @@ void _onPlayLastSong(Action action, Context<PlayControllerState> ctx) async {
     print(response);
 
     GlobalStoreUtil.globalState
-        .dispatch(AppStoreActionCreate.updatePlayIndexAction(nextSong.index));
+        .dispatch(AppStateActionCreator.updatePlayIndexAction(nextSong.index));
     GlobalStoreUtil.globalState
-        .dispatch(AppStoreActionCreate.updatePlayStatus(PlayStatus.Playing));
+        .dispatch(AppStateActionCreator.updatePlayStatus(PlayStatus.Playing));
 
     await FlutterCachedMusicPlayer.stop();
     await FlutterCachedMusicPlayer.prepare(response.data['data']['stream_url']);

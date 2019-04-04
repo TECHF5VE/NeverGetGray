@@ -2,6 +2,7 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:never_get_gray_mobile/play_list_page/play_list_item/state.dart';
 import 'package:never_get_gray_mobile/songs_list_page/songs_list_item/state.dart';
+import '../unit/playing_progress_timer_generator.dart';
 
 import 'action.dart';
 import 'state.dart';
@@ -20,20 +21,24 @@ Effect<PageState> buildEffect() {
   });
 }
 
+void _dispose(Action action, Context<PageState> ctx) {
+  ctx.state.tabController.dispose();
+}
+
 void _init(Action action, Context<PageState> ctx) async {
   final tabController =
       TabController(vsync: ctx.stfState as PageStfState, length: 3);
 
-  tabController.addListener(() => ctx.dispatch(
-      PageActionCreator.onTabChangeAction(
-          TagType.values[tabController.index])));
+  tabController.addListener(() {
+    ctx.dispatch(PageActionCreator.onTabChangeAction(
+        TagType.values[tabController.index]));
+  });
 
   ctx.dispatch(PageActionCreator.updateTabController(tabController));
-
   ctx.dispatch(PageActionCreator.initPendingAction());
 
   await FlutterCachedMusicPlayer.initializeAudioCache();
-
+  
   try {
     final response = await NetWorkUnit.get(
         GlobalStoreUtil.globalState.getState().ipAddr,
@@ -122,8 +127,4 @@ void _init(Action action, Context<PageState> ctx) async {
   }
 
   return;
-}
-
-void _dispose(Action action, Context<PageState> ctx) async {
-  ctx.state.tabController.dispose();
 }

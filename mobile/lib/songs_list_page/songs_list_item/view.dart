@@ -50,7 +50,7 @@ Widget buildView(
       ],
     ),
     onTap: () {
-      dispatch(SongsListItemActionCreator.onPlaySongAction(state.index + 1));
+      dispatch(SongsListItemActionCreator.onPlaySongAction(state.index));
     },
   );
 }

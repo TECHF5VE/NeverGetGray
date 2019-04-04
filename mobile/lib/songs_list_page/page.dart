@@ -4,12 +4,13 @@ import 'songs_list_adapter/adapter.dart';
 import 'view.dart';
 import '../play_list_page/play_list_item/state.dart';
 import '../music_player_page/play_controller_component/component.dart';
+import 'effect.dart';
 
 class SongsListPage extends Page<PlayListItemState, Map<String, dynamic>> {
   SongsListPage()
       : super(
           initState: initState,
-          effect: null,
+          effect: buildEffect(),
           reducer: null,
           view: buildView,
           dependencies: Dependencies<PlayListItemState>(

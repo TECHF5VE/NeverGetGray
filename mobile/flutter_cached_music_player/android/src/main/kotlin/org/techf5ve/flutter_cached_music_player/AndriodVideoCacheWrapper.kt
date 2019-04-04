@@ -13,21 +13,24 @@ object AndriodVideoCacheWrapper {
     private val STREAM = BuildConfig.APPLICATION_ID + "/buffer_percent_stream";
 
     private var proxyServer: HttpProxyCacheServer? = null
-    private var currentUrl: String? = null
+    var currentUrl: String? = null
     private var listener: CacheListener? = null
 
     fun initialize(activity: FlutterView, ctx: Context) {
+        if (proxyServer != null) {
+            return
+        }
         proxyServer = getProxy(ctx)
         EventChannel(activity, STREAM).setStreamHandler(object: EventChannel.StreamHandler {
             override fun onListen(args: Any?, events: EventChannel.EventSink?) {
                 listener = CacheListener { cacheFile: File, url: String, percentsAvailable: Int ->
-                    events!!.success(percentsAvailable);
+                    events!!.success(percentsAvailable)
                 };
                 proxyServer!!.registerCacheListener(listener, currentUrl)
             }
 
             override fun onCancel(args: Any?) {
-                proxyServer!!.unregisterCacheListener(listener);
+                proxyServer!!.unregisterCacheListener(listener)
             }
         })
     }

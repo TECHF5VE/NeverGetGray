@@ -56,7 +56,7 @@ void _onLogIn(Action action, Context<LogInState> ctx) async {
       ctx.dispatch(LogInActionCreator.logInSuccessAcion());
 
       GlobalStoreUtil.globalState
-          .dispatch(AppStoreActionCreate.updateGlobalInfoAction({
+          .dispatch(AppStateActionCreator.updateGlobalInfoAction({
         'userName': ctx.state.userName.text,
         'ipAddr': ctx.state.serverIP.text,
         'port': ctx.state.serverPort.text,

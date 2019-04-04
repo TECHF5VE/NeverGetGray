@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:fish_redux/fish_redux.dart';
 import '../songs_list_page/songs_list_item/state.dart';
 import '../play_list_page/play_list_item/state.dart';
@@ -25,13 +27,16 @@ class AppState implements Cloneable<AppState> {
   List<SongsListItemState> playQueue;
   int playIndex;
 
-  int songLength;
+  int contentLength;
   int playingPosition;
 
-  int bufferedLength;
+  int bufferedPercentage;
+  bool isBufferd;
 
   PlayQueueMode playQueueMode;
   PlayStatus playStatus;
+
+  Timer playingProgressTimer;
 
   @override
   AppState clone() {
@@ -43,11 +48,12 @@ class AppState implements Cloneable<AppState> {
       ..playIndex = this.playIndex
       ..playQueue = this.playQueue
       ..playList = this.playList
-      ..songLength = this.songLength
+      ..contentLength = this.contentLength
       ..playingPosition = this.playingPosition
-      ..bufferedLength = this.bufferedLength
+      ..bufferedPercentage = this.bufferedPercentage
       ..playQueueMode = this.playQueueMode
-      ..playStatus = this.playStatus;
+      ..playStatus = this.playStatus
+      ..playingProgressTimer = this.playingProgressTimer;
   }
 }
 
@@ -72,11 +78,12 @@ AppState _initState() {
     ..playIndex = -1
     ..playQueue = []
     ..playList = null
-    ..songLength = 0
+    ..contentLength = 1
     ..playingPosition = 0
-    ..bufferedLength = 0
+    ..bufferedPercentage = 0
     ..playQueueMode = PlayQueueMode.Sequence
-    ..playStatus = PlayStatus.Paused;
+    ..playStatus = PlayStatus.Paused
+    ..playingProgressTimer = null;
 }
 
 Reducer<AppState> _buildReducer() {
@@ -86,6 +93,10 @@ Reducer<AppState> _buildReducer() {
     AppStoreAction.updatePlayIndex: _updatePlayIndexReducer,
     AppStoreAction.updatePlayStatus: _updatePlayStatusReducer,
     AppStoreAction.updatePlayQueueMode: _updatePlayQueueModeReducer,
+    AppStoreAction.updateBufferedPercentage: _updateBufferedPercentageReducer,
+    AppStoreAction.updatePlayingPosition: _updatePlayingPositionAction,
+    AppStoreAction.updateContentLength: _updateContentLengthReducer,
+    AppStoreAction.updatePlayingProgressTimer: _updatePlayingProgressTimer,
   });
 }
 
@@ -123,15 +134,43 @@ AppState _updatePlayQueueModeReducer(AppState state, Action action) {
   return newState..playQueueMode = payload;
 }
 
+AppState _updateBufferedPercentageReducer(AppState state, Action action) {
+  final payload = action.payload as int;
+  final newState = state.clone();
+  return newState..bufferedPercentage = payload;
+}
+
+AppState _updateContentLengthReducer(AppState state, Action action) {
+  final payload = action.payload as int;
+  final newState = state.clone();
+  return newState..contentLength = payload;
+}
+
+AppState _updatePlayingPositionAction(AppState state, Action action) {
+  final payload = action.payload as int;
+  final newState = state.clone();
+  return newState..playingPosition = payload;
+}
+
+AppState _updatePlayingProgressTimer(AppState state, Action action) {
+  final payload = action.payload as Timer;
+  final newState = state.clone();
+  return newState..playingProgressTimer = payload;
+}
+
 enum AppStoreAction {
   updateGlobalInfo,
   updatePlayList,
   updatePlayIndex,
   updatePlayStatus,
   updatePlayQueueMode,
+  updateBufferedPercentage,
+  updateContentLength,
+  updatePlayingPosition,
+  updatePlayingProgressTimer,
 }
 
-class AppStoreActionCreate {
+class AppStateActionCreator {
   static Action updateGlobalInfoAction(Map<String, String> info) =>
       Action(AppStoreAction.updateGlobalInfo, payload: info);
   static Action updatePlayListAction(PlayListItemState state) =>
@@ -142,4 +181,13 @@ class AppStoreActionCreate {
       Action(AppStoreAction.updatePlayStatus, payload: status);
   static Action updatePlayQueueMode(PlayQueueMode mode) =>
       Action(AppStoreAction.updatePlayQueueMode, payload: mode);
+  static Action updateBufferedPercentageAction(int percentage) =>
+      Action(AppStoreAction.updateBufferedPercentage, payload: percentage);
+  static Action updatePlayingPositionAction(int position) =>
+      Action(AppStoreAction.updatePlayingPosition, payload: position);
+  static Action updateContentLength(int contentLength) =>
+      Action(AppStoreAction.updateContentLength, payload: contentLength);
+  static Action updatePlayingProgressTimer(Timer timer) {
+    return Action(AppStoreAction.updatePlayingProgressTimer, payload: timer);
+  }
 }

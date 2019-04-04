@@ -34,7 +34,6 @@ class FlutterCachedMusicPlayerPlugin(val registrar: Registrar): MethodCallHandle
           Log.i("plugin", "brefore_prepare")
           ExoPlayerWrapper.prepare(call.argument<String>("url")!!, registrar.context(), registrar.view())
           result.success(null)
-          Log.i("plugin", call.argument<String>("url")!!);
         }
         "play" -> {
           ExoPlayerWrapper.play()
@@ -50,6 +49,16 @@ class FlutterCachedMusicPlayerPlugin(val registrar: Registrar): MethodCallHandle
           ExoPlayerWrapper.pause()
           result.success(null)
           Log.i("plugin", "stop_internal");
+        }
+        "isCached" -> {
+          val isCached = AndriodVideoCacheWrapper.isAudioCached(call.argument<String>("url")!!);
+          result.success(isCached);
+          Log.i("plugin", "${isCached}");
+        }
+        "isCurrentCached" -> {
+          val isCached = AndriodVideoCacheWrapper.isAudioCached(AndriodVideoCacheWrapper.currentUrl!!);
+          result.success(isCached);
+          Log.i("plugin", "${isCached}");
         }
         "getDuration" -> result.success(ExoPlayerWrapper.duration)
         "getCurrentPosition" -> result.success(ExoPlayerWrapper.currentPosition)

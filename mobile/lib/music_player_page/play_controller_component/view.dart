@@ -17,6 +17,7 @@ const _icons = [
 
 Widget buildView(
     PlayControllerState state, Dispatch dispatch, ViewService viewService) {
+  // print(state.playingPosition / state.contentLength);
   return Container(
     decoration: BoxDecoration(
         border: Border(top: BorderSide(color: Colors.grey, width: 0.3))),
@@ -48,7 +49,7 @@ Widget buildView(
                         PlayControllerActionCreator.onUpdatePlayStatusAction(
                             newState));
                     GlobalStoreUtil.globalState.dispatch(
-                        AppStoreActionCreate.updatePlayStatus(newState));
+                        AppStateActionCreator.updatePlayStatus(newState));
                   },
                   padding: const EdgeInsets.all(0),
                 ),
@@ -108,8 +109,8 @@ Widget buildView(
           padding: EdgeInsets.only(left: 40, right: 40, bottom: 0, top: 0),
           margin: EdgeInsets.only(bottom: 0),
           child: ProgressSlider(
-            value: 0.3,
-            bufferedValue: 0.5,
+            value: state.playingPosition / state.contentLength,
+            bufferedValue: state.bufferedPercentage / 100.0,
             onDragEnd: () => print('drag end.'),
             onDragStart: () => print('drag start.'),
             onValueUpdated: (double progressValue) {},

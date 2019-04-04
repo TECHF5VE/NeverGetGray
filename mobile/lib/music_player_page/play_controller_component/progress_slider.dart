@@ -14,12 +14,9 @@ class ProgressSlider extends StatefulWidget {
   final ProgressCallBackWithValue onValueUpdated;
 
   ProgressSlider({
-    @required
-    this.onDragStart,
-    @required
-    this.onDragEnd,
-    @required
-    this.onValueUpdated,
+    @required this.onDragStart,
+    @required this.onDragEnd,
+    @required this.onValueUpdated,
     this.value = 0.0,
     this.bufferedValue = 0.0,
   });
@@ -32,10 +29,11 @@ class _ProgressSliderState extends State<ProgressSlider> {
   double _position = 0.0;
   double _value;
 
-  _ProgressSliderState(double value): _value=value;
+  _ProgressSliderState(double value) : _value = value;
 
   @override
   Widget build(BuildContext context) {
+    this._value = this.widget.value;
     return Container(
         height: 12,
         child: LayoutBuilder(
@@ -73,11 +71,14 @@ class _ProgressSliderState extends State<ProgressSlider> {
                     child: SizedBox(
                         height: 12,
                         child: GestureDetector(
-                          onHorizontalDragStart: (details) => { this.widget.onDragStart() },
-                          onHorizontalDragEnd: (details) => { this.widget.onDragEnd()},
+                          onHorizontalDragStart: (details) =>
+                              {this.widget.onDragStart()},
+                          onHorizontalDragEnd: (details) =>
+                              {this.widget.onDragEnd()},
                           onHorizontalDragUpdate: (details) {
-                              _onPointDrag(details, constrains.maxWidth, this.widget.bufferedValue);
-                              this.widget.onValueUpdated(this._value);
+                            _onPointDrag(details, constrains.maxWidth,
+                                this.widget.bufferedValue);
+                            this.widget.onValueUpdated(this._value);
                           },
                           child: new Container(
                             width: 10,
@@ -94,10 +95,12 @@ class _ProgressSliderState extends State<ProgressSlider> {
         ));
   }
 
-  void _onPointDrag(DragUpdateDetails details, double maxWidth, double bufferdProgress) {
+  void _onPointDrag(
+      DragUpdateDetails details, double maxWidth, double bufferdProgress) {
     this.setState(() {
       this._position += details.delta.dx;
-      this._position = max(0, min(this._position, maxWidth * bufferdProgress - 10));
+      this._position =
+          max(0, min(this._position, maxWidth * bufferdProgress - 10));
       this._value = this._position / (maxWidth - 10);
     });
   }

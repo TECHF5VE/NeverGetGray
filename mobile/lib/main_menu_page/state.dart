@@ -2,12 +2,11 @@ import 'dart:async';
 
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
-import '../music_player_page/cover_component/state.dart';
-import '../music_player_page/play_controller_component/state.dart';
 import '../play_list_page/state.dart';
 import '../play_list_page/play_list_item/state.dart';
 import '../setting_page/state.dart';
-import '../unit/global_store.dart';
+import '../music_player_page/state.dart';
+
 
 enum TagType {
   MusicPlayer,
@@ -29,8 +28,8 @@ class PageState implements Cloneable<PageState> {
   PageState clone() {
     var newState = PageState()
     ..currentTagType = this.currentTagType
-    ..coverUri = this.coverUri
     ..imageAngle = this.imageAngle
+    ..coverUri = this.coverUri
     ..timer = this.timer
     ..playListItems = this.playListItems
     ..isWaiting = this.isWaiting
@@ -48,39 +47,6 @@ PageState initState(Map<String, String> args) {
   ..imageAngle = 0.0
   ..playListItems = []
   ..isWaiting = false;
-}
-
-class CoverConnector extends ConnOp<PageState, CoverState> {
-  @override
-  CoverState get(PageState state) {
-    final coverState = CoverState()
-    ..coverUrl = state.coverUri
-    ..imageAngle = state.imageAngle
-    ..timer = state.timer;
-    return coverState;
-  }
-
-  @override
-  void set(PageState state, CoverState substate) {
-    state.coverUri = substate.coverUrl;
-    state.imageAngle = substate.imageAngle;
-    state.timer = substate.timer;
-  }
-}
-
-class PlayControllerConnector extends ConnOp<PageState, PlayControllerState> {
-  @override
-  PlayControllerState get(PageState state) {
-    return PlayControllerState()
-      ..playStatus = GlobalStoreUtil.globalState.getState().playStatus
-      ..playQueueMode = GlobalStoreUtil.globalState.getState().playQueueMode;
-  }
-
-  @override
-  void set(PageState state, PlayControllerState substate) {
-    GlobalStoreUtil.globalState.dispatch(AppStoreActionCreate.updatePlayStatus(substate.playStatus));
-    GlobalStoreUtil.globalState.dispatch(AppStoreActionCreate.updatePlayQueueMode(substate.playQueueMode));
-  }
 }
 
 class PlayListConnector extends ConnOp<PageState, PlayListState> {
@@ -104,4 +70,17 @@ class SettingConnector extends ConnOp<PageState, SettingState> {
 
   @override
   void set(PageState state, SettingState substate) {}
+}
+
+class MusicPlayerConnector extends ConnOp<PageState, MusicPlayerState> {
+  @override
+  MusicPlayerState get(PageState state) {
+    return MusicPlayerState()
+      ..imageAngle = state.imageAngle
+      ..coverUri = state.coverUri
+      ..timer = state.timer;
+  }
+
+  @override
+  void set(PageState state, MusicPlayerState substate) {}
 }

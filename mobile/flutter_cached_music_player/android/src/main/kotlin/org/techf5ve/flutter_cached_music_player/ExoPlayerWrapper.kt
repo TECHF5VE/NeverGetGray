@@ -34,18 +34,18 @@ object ExoPlayerWrapper {
 
         if (simpleExoPlayer == null) {
             simpleExoPlayer = newSimpleExoPlayer(ctx)
-//            EventChannel(activity, STERAM).setStreamHandler(object: EventChannel.StreamHandler {
-//                override fun onListen(args: Any?, events: EventChannel.EventSink?) {
-//                     simpleExoPlayer!!.addListener(object: Player.EventListener {
-//
-//                     })//To change body of created functions use File | Settings | File Templates.
-//                }
-//
-//                override fun onCancel(p0: Any?) {
-//                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-//                }
-//
-//            })
+            EventChannel(activity, STERAM).setStreamHandler(object: EventChannel.StreamHandler {
+                override fun onListen(args: Any?, events: EventChannel.EventSink?) {
+                     simpleExoPlayer!!.addListener(object: Player.EventListener {
+
+                     })//To change body of created functions use File | Settings | File Templates.
+                }
+
+                override fun onCancel(p0: Any?) {
+                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                }
+
+            })
         }
 
         val videoSource = newVideoSource(proxy!!, ctx)

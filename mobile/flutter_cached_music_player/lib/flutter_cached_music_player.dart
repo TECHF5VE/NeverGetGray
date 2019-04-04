@@ -12,30 +12,42 @@ class FlutterCachedMusicPlayer {
   }
 
   static Future initializeAudioCache() async {
-    await _channel.invokeMethod('initializeAudioCache');
+    return _channel.invokeMethod('initializeAudioCache');
   }
 
   static Future prepare(String url) async {
-    await _channel.invokeMethod('prepare', <String, String>{
+    return _channel.invokeMethod('prepare', <String, String>{
       'url': url,
     });
   }
 
   static Future play() async {
-    await _channel.invokeMethod('play');
+    return _channel.invokeMethod('play');
   }
 
   static Future pause() async {
-    await _channel.invokeMethod('pause');
+    return _channel.invokeMethod('pause');
   }
 
   static Future stop() async {
-    await _channel.invokeMethod('stop');
+    return _channel.invokeMethod('stop');
   }
 
-  static Future<int> get musicContentLength async => await _channel.invokeMethod('getDuration');
+  static Future<bool> isCached(String url) async {
+    return _channel.invokeMethod('isCached', {
+      'url': url,
+    });
+  }
 
-  static Future<int> get currentPlayingPosition async => await _channel.invokeMethod('getCurrentPosition');
+  static Future<bool> isCurrentCached(String url) async {
+    return _channel.invokeMethod('isCurrentCached');
+  }
+
+  static Future<int> get musicContentLength async =>
+      await _channel.invokeMethod('getDuration');
+
+  static Future<int> get currentPlayingPosition async =>
+      await _channel.invokeMethod('getCurrentPosition');
 
   static const EventChannel _eventChannel = const EventChannel(
       'org.techf5ve.flutter_cached_music_player/buffer_percent_stream');
@@ -48,7 +60,11 @@ class FlutterCachedMusicPlayer {
         onError: onError, onDone: onDone, cancelOnError: cancelOnError);
   }
 
-  static void cancelBufferPercentStreamListen() {
-    _subscription.cancel();
+  static Future<void> cancelBufferPercentStreamListen() async {
+    if (_subscription == null) {
+      return;
+    }
+    await _subscription.cancel();
+    _subscription = null;
   }
 }

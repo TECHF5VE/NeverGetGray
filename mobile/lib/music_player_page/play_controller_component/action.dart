@@ -15,6 +15,10 @@ enum PlayControllerAction {
 
   // TODO: remove this after update fish-redux.
   updatePlayStatusProxyWorkaround,
+
+  updateBufferdPercentage,
+  updatePlayingPosition,
+  updateContentLength,
 }
 
 class PlayControllerActionCreator {
@@ -36,4 +40,13 @@ class PlayControllerActionCreator {
 
   static Action onPlayLastSongAction() =>
       Action(PlayControllerAction.onPlayLastSong);
+
+  static Action updateBufferdPercentage(int percentage) =>
+      Action(PlayControllerAction.updateBufferdPercentage, payload: percentage);
+
+  static Action updatePlayingPosition(int position) =>
+      Action(PlayControllerAction.updatePlayingPosition, payload: position);
+
+  static Action updateContentLength(int length) =>
+      Action(PlayControllerAction.updateContentLength, payload: length);
 }
