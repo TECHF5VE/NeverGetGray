@@ -21,7 +21,8 @@ class _SongsListConnector extends ConnOp<PlayListItemState, List<ItemBean>> {
   List<ItemBean> get(PlayListItemState state) {
     if (state.songs?.isNotEmpty == true) {
       return state.songs
-          .map((elem) => ItemBean('songsListItem', elem))
+          .map((elem) =>
+              ItemBean('songsListItem', elem..appState = state.appState))
           .toList(growable: true);
     } else {
       return [];
@@ -30,6 +31,8 @@ class _SongsListConnector extends ConnOp<PlayListItemState, List<ItemBean>> {
 
   @override
   void set(PlayListItemState state, List<ItemBean> substate) {
-    state.songs = substate.map<SongsListItemState>((elem) => elem.data).toList();
+    print(state.appState.playControllerState.playIndex);
+    state.songs =
+        substate.map<SongsListItemState>((elem) => elem.data).toList();
   }
 }

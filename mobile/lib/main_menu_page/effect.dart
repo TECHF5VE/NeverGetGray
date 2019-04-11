@@ -12,7 +12,6 @@ import 'package:never_get_gray_mobile/unit/network.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_cached_music_player/flutter_cached_music_player.dart';
 
-import '../unit/global_store.dart';
 
 Effect<PageState> buildEffect() {
   return combineEffects(<Object, Effect<PageState>>{
@@ -38,13 +37,11 @@ void _init(Action action, Context<PageState> ctx) async {
   ctx.dispatch(PageActionCreator.initPendingAction());
 
   await FlutterCachedMusicPlayer.initializeAudioCache();
-  
+
   try {
     final response = await NetWorkUnit.get(
-        GlobalStoreUtil.globalState.getState().ipAddr,
-        'playlists',
-        GlobalStoreUtil.globalState.getState().port, {
-      'auth_key': GlobalStoreUtil.globalState.getState().authKey,
+        ctx.state.appState.ipAddr, 'playlists', ctx.state.appState.port, {
+      'auth_key': ctx.state.appState.authKey,
     });
 
     if (response.data['code'] == '200') {
@@ -57,7 +54,7 @@ void _init(Action action, Context<PageState> ctx) async {
         final songsLists = playList['songs'];
         var index = 0;
         for (final songs in songsLists) {
-          songsListItems.add(SongsListItemState()
+          songsListItems.add(SongsListItemState(ctx.state.appState)
             ..uid = songs['uid']
             ..name = songs['name']
             ..album = songs['album']
@@ -68,7 +65,7 @@ void _init(Action action, Context<PageState> ctx) async {
             ..isPlaying = false);
         }
 
-        playListItems.add(PlayListItemState()
+        playListItems.add(PlayListItemState(ctx.state.appState)
           ..name = playList['name']
           ..uid = playList['uid']
           ..songs = songsListItems);
@@ -79,10 +76,10 @@ void _init(Action action, Context<PageState> ctx) async {
           try {
             final firstSong = playListItem.songs[0];
             final albumResponse = await NetWorkUnit.get(
-              GlobalStoreUtil.globalState.getState().ipAddr,
+              ctx.state.appState.ipAddr,
               'songs/${firstSong.uid}',
-              GlobalStoreUtil.globalState.getState().port,
-              {'auth_key': GlobalStoreUtil.globalState.getState().authKey},
+              ctx.state.appState.port,
+              {'auth_key': ctx.state.appState.authKey},
             );
             if (albumResponse.data['code'] == '200') {
               firstSong.albumImg = albumResponse.data['data']['album_img'];

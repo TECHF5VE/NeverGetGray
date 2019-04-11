@@ -10,7 +10,14 @@ Reducer<LogInState> buildReducer() {
     LogInAction.logInError: _logInErrorReducer,
     LogInAction.updateLogInInfo: _updateLogInInfo,
     LogInAction.initFromStorage: _initFromStorage,
+    LogInAction.updateAuthKey: _updateAuthKey,
   });
+}
+
+LogInState _updateAuthKey(LogInState state, Action action) {
+  final newState = state.clone();
+  newState.authKey = action.payload;
+  return newState;
 }
 
 LogInState _logInSuccessReducer(LogInState state, Action action) {

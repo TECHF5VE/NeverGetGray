@@ -1,4 +1,5 @@
 import 'package:fish_redux/fish_redux.dart';
+import 'package:never_get_gray_mobile/music_player_page/play_controller_component/action.dart';
 import 'package:never_get_gray_mobile/play_list_page/play_list_item/state.dart';
 
 import 'action.dart';
@@ -16,11 +17,11 @@ Effect<PlayListState> buildEffect() {
 }
 
 void _onAppear(Action action, Context<PlayListState> ctx) async {
-  if (GlobalStoreUtil.globalState.getState().playIndex != -1) {
-    if (GlobalStoreUtil.globalState.getState().playingProgressTimer != null) {
-      GlobalStoreUtil.globalState.getState().playingProgressTimer.cancel();
-      GlobalStoreUtil.globalState
-          .dispatch(AppStateActionCreator.updatePlayingProgressTimer(null));
+  final controllerState = ctx.state.appState.playControllerState;
+  if (controllerState.playIndex != -1) {
+    if (controllerState.playingProgressTimer != null) {
+      controllerState.playingProgressTimer.cancel();
+      ctx.dispatch(PlayControllerActionCreator.updatePlayingProgressTimerReducer(null));
     }
     generatePlayingProcessTimer(ctx);
   }

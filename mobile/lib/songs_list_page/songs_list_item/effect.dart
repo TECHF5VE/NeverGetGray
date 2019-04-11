@@ -18,14 +18,13 @@ Effect<SongsListItemState> buildEffect() {
 
 void _onPlaySong(Action action, Context<SongsListItemState> ctx) async {
   // TODO: reset related info when change playlist.
-
   if (ctx.state.index != action.payload) {
     return;
   }
 
-  final ip = GlobalStoreUtil.globalState.getState().ipAddr;
-  final port = GlobalStoreUtil.globalState.getState().port;
-  final authKey = GlobalStoreUtil.globalState.getState().authKey;
+  final ip = ctx.state.appState.ipAddr;
+  final port = ctx.state.appState.port;
+  final authKey = ctx.state.appState.authKey;
 
   try {
     if (ctx.state.albumImg == '') {
@@ -52,39 +51,37 @@ void _onPlaySong(Action action, Context<SongsListItemState> ctx) async {
     });
 
     print(response);
-    // FlutterCachedMusicPlayer.listenToBufferPercentStream((data) => print(data));
 
-    if (GlobalStoreUtil.globalState.getState().playIndex != -1) {
+    final controllerState = ctx.state.appState.playControllerState;
+    if (controllerState.playIndex != -1) {
       ctx.dispatch(SongsListItemActionCreator.updateIsPlayingAction(
-          false, GlobalStoreUtil.globalState.getState().playIndex));
+          false, controllerState.playIndex));
     }
 
-    GlobalStoreUtil.globalState
-        .dispatch(AppStateActionCreator.updatePlayIndexAction(ctx.state.index));
-    GlobalStoreUtil.globalState
-        .dispatch(AppStateActionCreator.updatePlayStatus(PlayStatus.Playing));
+    ctx.dispatch(
+        PlayControllerActionCreator.updatePlayIndexAction(ctx.state.index));
+    ctx.dispatch(
+        PlayControllerActionCreator.updatePlayStatusAction(PlayStatus.Playing));
 
     PlayQueue.instance.clearHistory();
-    PlayQueue.instance.generatePlayQueue();
+    PlayQueue.instance.generatePlayQueue(ctx.state);
 
     await FlutterCachedMusicPlayer.stop();
     await FlutterCachedMusicPlayer.prepare(response.data['data']['stream_url']);
     await FlutterCachedMusicPlayer.play();
 
-    if (GlobalStoreUtil.globalState.getState().playingProgressTimer != null) {
-      GlobalStoreUtil.globalState.getState().playingProgressTimer.cancel();
-      GlobalStoreUtil.globalState
-          .dispatch(AppStateActionCreator.updatePlayingProgressTimer(null));
+    if (controllerState.playingProgressTimer != null) {
+      controllerState.playingProgressTimer.cancel();
+      ctx.dispatch(
+          PlayControllerActionCreator.updatePlayingProgressTimerReducer(null));
     }
     generatePlayingProcessTimer(ctx);
-    print(GlobalStoreUtil.globalState.getState().playingProgressTimer);
+    print(controllerState.playingProgressTimer);
 
     FlutterCachedMusicPlayer.listenToBufferPercentStream((percentage) async {
       print('percentage: $percentage');
-      GlobalStoreUtil.globalState.dispatch(
-          AppStateActionCreator.updateBufferedPercentageAction(percentage));
-      AppProvider.appBroadcast(ctx.context,
-          AppStateActionCreator.updateBufferedPercentageAction(percentage));
+      ctx.dispatch(PlayControllerActionCreator.updateBufferedPercentageAction(
+          percentage));
       if (percentage >= 100) {
         await FlutterCachedMusicPlayer.cancelBufferPercentStreamListen();
       }
@@ -93,10 +90,8 @@ void _onPlaySong(Action action, Context<SongsListItemState> ctx) async {
     ctx.dispatch(SongsListItemActionCreator.updateIsPlayingAction(
         true, ctx.state.index));
 
-    AppProvider.appBroadcast(
-        ctx.context,
-        PlayControllerActionCreator.updatePlayStatusWorkAroundAction(
-            PlayStatus.Playing));
+    ctx.dispatch(
+        PlayControllerActionCreator.updatePlayStatusAction(PlayStatus.Playing));
   } catch (e) {
     print(e);
   }

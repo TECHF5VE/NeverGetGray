@@ -5,12 +5,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'action.dart';
 import 'state.dart';
 
-import 'package:never_get_gray_mobile/main_menu_page/page.dart' as mainPage;
-import 'package:never_get_gray_mobile/register_page/page.dart' as registerPage;
+// import 'package:never_get_gray_mobile/main_menu_page/page.dart' as mainPage;
+// import 'package:never_get_gray_mobile/register_page/page.dart' as registerPage;
 
 import 'package:never_get_gray_mobile/unit/network.dart';
 
-import '../unit/global_store.dart';
+// import '../unit/global_store.dart';
+import 'package:never_get_gray_mobile/app_route.dart';
 
 Effect<LogInState> buildEffect() {
   return combineEffects(<Object, Effect<LogInState>>{
@@ -54,14 +55,8 @@ void _onLogIn(Action action, Context<LogInState> ctx) async {
 
     if (response.data['code'] == '200') {
       ctx.dispatch(LogInActionCreator.logInSuccessAcion());
-
-      GlobalStoreUtil.globalState
-          .dispatch(AppStateActionCreator.updateGlobalInfoAction({
-        'userName': ctx.state.userName.text,
-        'ipAddr': ctx.state.serverIP.text,
-        'port': ctx.state.serverPort.text,
-        'authKey': response.data['data']['auth_key'],
-      }));
+      ctx.dispatch(
+          LogInActionCreator.updateAuthKey(response.data['data']['auth_key']));
 
       SharedPreferences preferences = await SharedPreferences.getInstance();
       await preferences.setString('userName', logInInfo['userName']);
@@ -71,13 +66,12 @@ void _onLogIn(Action action, Context<LogInState> ctx) async {
 
       Navigator.of(ctx.context)
           .pushReplacement(MaterialPageRoute<Map<String, String>>(
-        builder: (buildCtx) => mainPage.MainMenuPage().buildPage(null),
+        builder: (buildCtx) => AppRoute.global.buildPage('main', null),
       ));
     } else {
       _showFailedDialog('Invalid user name or password.', ctx);
     }
   } catch (e) {
-    // print(e);
     _showFailedDialog('Invalid private server IP address or port number.', ctx);
   }
 }
@@ -103,5 +97,5 @@ void _showFailedDialog(String message, Context<LogInState> ctx) {
 
 void _onRegister(Action action, Context<LogInState> ctx) {
   Navigator.of(ctx.context).push(MaterialPageRoute(
-      builder: (buildCtx) => registerPage.RegisterPage().buildPage(null)));
+      builder: (buildCtx) => AppRoute.global.buildPage('register', null)));
 }

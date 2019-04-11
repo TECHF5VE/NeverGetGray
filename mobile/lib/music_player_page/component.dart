@@ -49,21 +49,11 @@ class PlayControllerConnector
     extends ConnOp<MusicPlayerState, PlayControllerState> {
   @override
   PlayControllerState get(MusicPlayerState state) {
-    return PlayControllerState()
-      ..playStatus = GlobalStoreUtil.globalState.getState().playStatus
-      ..playQueueMode = GlobalStoreUtil.globalState.getState().playQueueMode
-      ..bufferedPercentage =
-          GlobalStoreUtil.globalState.getState().bufferedPercentage
-      ..contentLength = GlobalStoreUtil.globalState.getState().contentLength
-      ..playingPosition =
-          GlobalStoreUtil.globalState.getState().playingPosition;
+    return state.appState.playControllerState..appState = state.appState;
   }
 
   @override
   void set(MusicPlayerState state, PlayControllerState substate) {
-    GlobalStoreUtil.globalState
-        .dispatch(AppStateActionCreator.updatePlayStatus(substate.playStatus));
-    GlobalStoreUtil.globalState.dispatch(
-        AppStateActionCreator.updatePlayQueueMode(substate.playQueueMode));
+    state.appState.playControllerState = substate;
   }
 }

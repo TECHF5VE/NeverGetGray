@@ -14,25 +14,19 @@ Effect<PlayControllerState> buildEffect() {
     PlayControllerAction.onUpdatePlayQueueMode: _onUpdatePlayQueueMode,
     PlayControllerAction.onPlayNextSong: _onPlayNextSong,
     PlayControllerAction.onPlayLastSong: _onPlayLastSong,
-
-    // TODO: remove this after update fish-redux.
-    PlayControllerAction.updatePlayStatusProxyWorkaround: (action, ctx) => {
-          ctx.dispatch(PlayControllerActionCreator.updatePlayStatusAction(
-              action.payload))
-        },
   });
 }
 
 void _onUpdatePlayQueueMode(Action action, Context<PlayControllerState> ctx) {
   final mode = action.payload as PlayQueueMode;
 
-  PlayQueue.instance.generatePlayQueue();
+  PlayQueue.instance.generatePlayQueue(ctx.state);
 
   ctx.dispatch(PlayControllerActionCreator.updatePlayQueueModeAction(mode));
 }
 
 void _onPlayOrPause(Action action, Context<PlayControllerState> ctx) async {
-  if (GlobalStoreUtil.globalState.getState().playIndex == -1) {
+  if (ctx.state.playIndex == -1) {
     return;
   }
 
@@ -54,15 +48,15 @@ void _onPlayOrPause(Action action, Context<PlayControllerState> ctx) async {
 }
 
 Future _onPlayNextSong(Action action, Context<PlayControllerState> ctx) async {
-  if (GlobalStoreUtil.globalState.getState().playIndex == -1) {
+  if (ctx.state.playIndex == -1) {
     return;
   }
 
-  final nextSong = PlayQueue.instance.nextSongInfo;
+  final nextSong = PlayQueue.instance.getNextSongInfo(ctx.state);
 
-  final ip = GlobalStoreUtil.globalState.getState().ipAddr;
-  final port = GlobalStoreUtil.globalState.getState().port;
-  final authKey = GlobalStoreUtil.globalState.getState().authKey;
+  final ip = ctx.state.appState.ipAddr;
+  final port = ctx.state.appState.port;
+  final authKey = ctx.state.appState.authKey;
 
   try {
     if (nextSong.albumImg == '') {
@@ -71,8 +65,6 @@ Future _onPlayNextSong(Action action, Context<PlayControllerState> ctx) async {
         'auth_key': authKey,
       });
 
-      print(response);
-
       // if (response.data['code'] == '200') {
       //   ctx.dispatch(SongsListItemActionCreator.udpateAlbumImg(
       //       response.data['data']['album_img']));
@@ -80,17 +72,16 @@ Future _onPlayNextSong(Action action, Context<PlayControllerState> ctx) async {
       //       response.data['data']['lyrics']));
       // }
     }
-    
+
     final response = await NetWorkUnit.get(ip, 'stream/${nextSong.uid}', port, {
       'auth_key': authKey,
     });
 
-    print(response);
-
-    GlobalStoreUtil.globalState
-        .dispatch(AppStateActionCreator.updatePlayIndexAction(nextSong.index));
-    GlobalStoreUtil.globalState
-        .dispatch(AppStateActionCreator.updatePlayStatus(PlayStatus.Playing));
+    // GlobalStoreUtil.globalState
+    //     .dispatch(AppStateActionCreator.updatePlayIndexAction(nextSong.index));
+    // todo: update SongsListItem playing status.
+    ctx.dispatch(PlayControllerActionCreator.updatePlayIndexAction(nextSong.index));
+    ctx.dispatch(PlayControllerActionCreator.updatePlayStatusAction(PlayStatus.Playing));
 
     await FlutterCachedMusicPlayer.stop();
     await FlutterCachedMusicPlayer.prepare(response.data['data']['stream_url']);
@@ -101,15 +92,15 @@ Future _onPlayNextSong(Action action, Context<PlayControllerState> ctx) async {
 }
 
 void _onPlayLastSong(Action action, Context<PlayControllerState> ctx) async {
-  if (GlobalStoreUtil.globalState.getState().playIndex == -1) {
+  if (ctx.state.playIndex == -1) {
     return;
   }
 
-  final nextSong = PlayQueue.instance.lastSongInfo;
+  final nextSong = PlayQueue.instance.getLastSongInfo(ctx.state);
 
-  final ip = GlobalStoreUtil.globalState.getState().ipAddr;
-  final port = GlobalStoreUtil.globalState.getState().port;
-  final authKey = GlobalStoreUtil.globalState.getState().authKey;
+  final ip = ctx.state.appState.ipAddr;
+  final port = ctx.state.appState.port;
+  final authKey = ctx.state.appState.authKey;
 
   try {
     if (nextSong.albumImg == '') {
@@ -127,18 +118,21 @@ void _onPlayLastSong(Action action, Context<PlayControllerState> ctx) async {
       //       response.data['data']['lyrics']));
       // }
     }
-    
+
     final response = await NetWorkUnit.get(ip, 'stream/${nextSong.uid}', port, {
       'auth_key': authKey,
     });
 
     print(response);
 
-    GlobalStoreUtil.globalState
-        .dispatch(AppStateActionCreator.updatePlayIndexAction(nextSong.index));
-    GlobalStoreUtil.globalState
-        .dispatch(AppStateActionCreator.updatePlayStatus(PlayStatus.Playing));
+    // GlobalStoreUtil.globalState
+    //     .dispatch(AppStateActionCreator.updatePlayIndexAction(nextSong.index));
+    // GlobalStoreUtil.globalState
+    //     .dispatch(AppStateActionCreator.updatePlayStatus(PlayStatus.Playing));
 
+    ctx.dispatch(PlayControllerActionCreator.updatePlayIndexAction(nextSong.index));
+    ctx.dispatch(PlayControllerActionCreator.updatePlayStatusAction(PlayStatus.Playing));
+    
     await FlutterCachedMusicPlayer.stop();
     await FlutterCachedMusicPlayer.prepare(response.data['data']['stream_url']);
     await FlutterCachedMusicPlayer.play();

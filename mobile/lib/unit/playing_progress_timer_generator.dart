@@ -13,21 +13,21 @@ void generatePlayingProcessTimer(dynamic ctx) {
 
     // print("playPosition $playPosition, contentLength $contentLength");
 
-    GlobalStoreUtil.globalState.dispatch(
-        AppStateActionCreator.updatePlayingPositionAction(playPosition));
-    GlobalStoreUtil.globalState
-        .dispatch(AppStateActionCreator.updateContentLength(contentLength));
+    ctx.dispatch(
+        PlayControllerActionCreator.updatePlayingPositionAction(playPosition));
+    ctx.dispatch(
+        PlayControllerActionCreator.updateContentLengthAction(contentLength));
 
     ctx.dispatch(
-        PlayControllerActionCreator.updatePlayingPosition(playPosition));
+        PlayControllerActionCreator.updatePlayingPositionAction(playPosition));
     ctx.dispatch(
-        PlayControllerActionCreator.updateContentLength(contentLength));
+        PlayControllerActionCreator.updateContentLengthAction(contentLength));
 
     if (playPosition >= contentLength) {
       t.cancel();
     }
   });
 
-  GlobalStoreUtil.globalState
-      .dispatch(AppStateActionCreator.updatePlayingProgressTimer(timer));
+  ctx.dispatch(
+      PlayControllerActionCreator.updatePlayingProgressTimerReducer(timer));
 }

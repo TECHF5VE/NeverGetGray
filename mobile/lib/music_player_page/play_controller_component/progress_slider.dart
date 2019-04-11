@@ -72,9 +72,9 @@ class _ProgressSliderState extends State<ProgressSlider> {
                         height: 12,
                         child: GestureDetector(
                           onHorizontalDragStart: (details) =>
-                              {this.widget.onDragStart()},
+                              this.widget.onDragStart(),
                           onHorizontalDragEnd: (details) =>
-                              {this.widget.onDragEnd()},
+                              this.widget.onDragEnd(),
                           onHorizontalDragUpdate: (details) {
                             _onPointDrag(details, constrains.maxWidth,
                                 this.widget.bufferedValue);
