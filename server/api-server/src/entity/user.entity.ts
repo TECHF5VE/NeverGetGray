@@ -1,5 +1,5 @@
-import { Base } from 'src/base.entity';
 import { Entity, Column } from 'typeorm';
+import { Base } from './base.entity';
 
 @Entity('Ngg_User')
 export class User extends Base {
