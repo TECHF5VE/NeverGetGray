@@ -33,6 +33,8 @@ class AppState implements Cloneable<AppState> {
   int bufferedPercentage;
   bool isBufferd;
 
+  int currentPlayListUid;
+
   PlayQueueMode playQueueMode;
   PlayStatus playStatus;
 
@@ -53,7 +55,8 @@ class AppState implements Cloneable<AppState> {
       ..bufferedPercentage = this.bufferedPercentage
       ..playQueueMode = this.playQueueMode
       ..playStatus = this.playStatus
-      ..playingProgressTimer = this.playingProgressTimer;
+      ..playingProgressTimer = this.playingProgressTimer
+      ..currentPlayListUid = this.currentPlayListUid;
   }
 }
 
@@ -83,7 +86,8 @@ AppState _initState() {
     ..bufferedPercentage = 0
     ..playQueueMode = PlayQueueMode.Sequence
     ..playStatus = PlayStatus.Paused
-    ..playingProgressTimer = null;
+    ..playingProgressTimer = null
+    ..currentPlayListUid = -1;
 }
 
 Reducer<AppState> _buildReducer() {
@@ -96,7 +100,9 @@ Reducer<AppState> _buildReducer() {
     AppStoreAction.updateBufferedPercentage: _updateBufferedPercentageReducer,
     AppStoreAction.updatePlayingPosition: _updatePlayingPositionAction,
     AppStoreAction.updateContentLength: _updateContentLengthReducer,
-    AppStoreAction.updatePlayingProgressTimer: _updatePlayingProgressTimer,
+    AppStoreAction.updatePlayingProgressTimer:
+        _updatePlayingProgressTimerReducer,
+    AppStoreAction.updateCurrentPlayListUid: _updateCurrentPlayListUidReducer,
   });
 }
 
@@ -152,10 +158,16 @@ AppState _updatePlayingPositionAction(AppState state, Action action) {
   return newState..playingPosition = payload;
 }
 
-AppState _updatePlayingProgressTimer(AppState state, Action action) {
+AppState _updatePlayingProgressTimerReducer(AppState state, Action action) {
   final payload = action.payload as Timer;
   final newState = state.clone();
   return newState..playingProgressTimer = payload;
+}
+
+AppState _updateCurrentPlayListUidReducer(AppState state, Action action) {
+  final payload = action.payload as int;
+  final newState = state.clone();
+  return newState..currentPlayListUid = payload;
 }
 
 enum AppStoreAction {
@@ -168,6 +180,7 @@ enum AppStoreAction {
   updateContentLength,
   updatePlayingPosition,
   updatePlayingProgressTimer,
+  updateCurrentPlayListUid,
 }
 
 class AppStateActionCreator {
@@ -187,7 +200,8 @@ class AppStateActionCreator {
       Action(AppStoreAction.updatePlayingPosition, payload: position);
   static Action updateContentLength(int contentLength) =>
       Action(AppStoreAction.updateContentLength, payload: contentLength);
-  static Action updatePlayingProgressTimer(Timer timer) {
-    return Action(AppStoreAction.updatePlayingProgressTimer, payload: timer);
-  }
+  static Action updatePlayingProgressTimerAction(Timer timer) =>
+      Action(AppStoreAction.updatePlayingProgressTimer, payload: timer);
+  static Action updateCurrentPlayListUidAction(int uid) =>
+      Action(AppStoreAction.updateCurrentPlayListUid, payload: uid);
 }

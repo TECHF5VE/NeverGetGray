@@ -85,8 +85,6 @@ Future _onPlayNextSong(Action action, Context<PlayControllerState> ctx) async {
       'auth_key': authKey,
     });
 
-    print(response);
-
     GlobalStoreUtil.globalState
         .dispatch(AppStateActionCreator.updatePlayIndexAction(nextSong.index));
     GlobalStoreUtil.globalState

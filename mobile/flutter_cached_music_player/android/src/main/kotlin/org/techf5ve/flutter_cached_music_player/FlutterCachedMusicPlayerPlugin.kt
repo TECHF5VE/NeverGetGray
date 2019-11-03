@@ -62,6 +62,10 @@ class FlutterCachedMusicPlayerPlugin(val registrar: Registrar): MethodCallHandle
         }
         "getDuration" -> result.success(ExoPlayerWrapper.duration)
         "getCurrentPosition" -> result.success(ExoPlayerWrapper.currentPosition)
+        "setCurrentPosition" -> {
+            ExoPlayerWrapper.currentPosition = call.argument<Long>("position")!!;
+            result.success(null);
+        }
         else -> result.notImplemented()
       }
     } catch (e: Exception) {

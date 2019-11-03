@@ -29,5 +29,5 @@ void generatePlayingProcessTimer(dynamic ctx) {
   });
 
   GlobalStoreUtil.globalState
-      .dispatch(AppStateActionCreator.updatePlayingProgressTimer(timer));
+      .dispatch(AppStateActionCreator.updatePlayingProgressTimerAction(timer));
 }

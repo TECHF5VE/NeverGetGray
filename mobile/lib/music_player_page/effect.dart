@@ -1,5 +1,6 @@
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter_cached_music_player/flutter_cached_music_player.dart';
+import 'package:never_get_gray_mobile/unit/native_listener_util.dart';
 
 import 'action.dart';
 import 'state.dart';
@@ -21,9 +22,11 @@ void _onAppear(Action action, Context<MusicPlayerState> ctx) {
     if (GlobalStoreUtil.globalState.getState().playingProgressTimer != null) {
       GlobalStoreUtil.globalState.getState().playingProgressTimer.cancel();
       GlobalStoreUtil.globalState
-          .dispatch(AppStateActionCreator.updatePlayingProgressTimer(null));
+          .dispatch(AppStateActionCreator.updatePlayingProgressTimerAction(null));
+      FlutterCachedMusicPlayer.cancelBufferPercentStreamListen();
     }
     generatePlayingProcessTimer(ctx);
+    listenToBufferPercentStream(ctx);    
   }
 }
 

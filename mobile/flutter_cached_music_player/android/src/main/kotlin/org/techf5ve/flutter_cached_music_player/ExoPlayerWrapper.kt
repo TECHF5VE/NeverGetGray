@@ -71,8 +71,9 @@ object ExoPlayerWrapper {
     val duration: Long
         get() = simpleExoPlayer!!.duration
 
-    val currentPosition: Long
+    var currentPosition: Long
         get() = simpleExoPlayer!!.currentPosition
+        set(value) = simpleExoPlayer!!.seekTo(value)
 
     private fun newSimpleExoPlayer(ctx: Context): SimpleExoPlayer {
         return ExoPlayerFactory.newSimpleInstance(ctx);

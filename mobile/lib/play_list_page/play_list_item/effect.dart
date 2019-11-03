@@ -3,6 +3,7 @@ import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter_cached_music_player/flutter_cached_music_player.dart';
 import '../../songs_list_page/page.dart' as songsListPage;
 import '../../unit/global_store.dart';
+import '../../unit/native_listener_util.dart';
 import '../../unit/playing_progress_timer_generator.dart';
 
 import 'action.dart';
@@ -29,20 +30,11 @@ void _onNavigateToSongsList(
     if (GlobalStoreUtil.globalState.getState().playingProgressTimer != null) {
       GlobalStoreUtil.globalState.getState().playingProgressTimer.cancel();
       GlobalStoreUtil.globalState
-          .dispatch(AppStateActionCreator.updatePlayingProgressTimer(null));
+          .dispatch(AppStateActionCreator.updatePlayingProgressTimerAction(null));
       await FlutterCachedMusicPlayer.cancelBufferPercentStreamListen();
     }
 
-    FlutterCachedMusicPlayer.listenToBufferPercentStream((percentage) async {
-      print('percentage: $percentage');
-      GlobalStoreUtil.globalState.dispatch(
-          AppStateActionCreator.updateBufferedPercentageAction(percentage));
-      AppProvider.appBroadcast(ctx.context,
-          AppStateActionCreator.updateBufferedPercentageAction(percentage));
-      if (percentage >= 100) {
-        await FlutterCachedMusicPlayer.cancelBufferPercentStreamListen();
-      }
-    });
+    listenToBufferPercentStream(ctx);
 
     if (GlobalStoreUtil.globalState.getState().playIndex != -1) {
       generatePlayingProcessTimer(ctx);

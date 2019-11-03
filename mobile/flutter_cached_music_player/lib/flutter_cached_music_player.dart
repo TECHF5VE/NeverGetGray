@@ -49,6 +49,11 @@ class FlutterCachedMusicPlayer {
   static Future<int> get currentPlayingPosition async =>
       await _channel.invokeMethod('getCurrentPosition');
 
+  static Future setCurrentPlayingPosition(int value) async =>
+      await _channel.invokeMethod('setCurrentPosition', {
+        'position': value,
+      });
+
   static const EventChannel _eventChannel = const EventChannel(
       'org.techf5ve.flutter_cached_music_player/buffer_percent_stream');
 
