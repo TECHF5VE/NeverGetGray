@@ -48,8 +48,9 @@ Widget buildView(
                     dispatch(
                         PlayControllerActionCreator.onUpdatePlayStatusAction(
                             newState));
-                    GlobalStoreUtil.globalState.dispatch(
-                        AppStateActionCreator.updatePlayStatus(newState));
+                        dispatch(PlayControllerActionCreator.updatePlayStatusAction(newState));
+                    // GlobalStoreUtil.globalState.dispatch(
+                    //     AppStateActionCreator.updatePlayStatus(newState));
                   },
                   padding: const EdgeInsets.all(0),
                 ),

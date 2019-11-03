@@ -18,6 +18,7 @@ dependencies:
   dio: ^2.1.0
   shared_preferences: ^0.5.1+2
   fluttertoast: ^3.0.3
+  fish_redux: ^0.1.5
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -30,8 +31,8 @@ dev_dependencies:
     sdk: flutter
   flutter_cached_music_player:
     path: ./flutter_cached_music_player
-  fish_redux:
-    path: ../../fish-redux
+  # fish_redux:
+  #   path: ../../fish-redux
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec

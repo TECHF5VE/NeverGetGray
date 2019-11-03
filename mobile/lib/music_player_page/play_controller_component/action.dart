@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:fish_redux/fish_redux.dart';
+import 'package:never_get_gray_mobile/play_list_page/play_list_item/state.dart';
 
 import 'state.dart';
 import '../../unit/global_store.dart';
@@ -13,12 +16,13 @@ enum PlayControllerAction {
   onPlayNextSong,
   onPlayLastSong,
 
-  // TODO: remove this after update fish-redux.
-  updatePlayStatusProxyWorkaround,
-
   updateBufferdPercentage,
   updatePlayingPosition,
   updateContentLength,
+
+  updatePlayIndex,
+  updatePlayingProgressTimer,
+  updatePlayList,
 }
 
 class PlayControllerActionCreator {
@@ -26,9 +30,6 @@ class PlayControllerActionCreator {
       Action(PlayControllerAction.onUpdatePlayStatus, payload: status);
   static Action updatePlayStatusAction(PlayStatus status) =>
       Action(PlayControllerAction.updatePlayStatus, payload: status);
-  static Action updatePlayStatusWorkAroundAction(PlayStatus status) =>
-      Action(PlayControllerAction.updatePlayStatusProxyWorkaround,
-          payload: status);
 
   static Action onUpdatePlayQueueModeAction(PlayQueueMode mode) =>
       Action(PlayControllerAction.onUpdatePlayQueueMode, payload: mode);
@@ -41,12 +42,21 @@ class PlayControllerActionCreator {
   static Action onPlayLastSongAction() =>
       Action(PlayControllerAction.onPlayLastSong);
 
-  static Action updateBufferdPercentage(int percentage) =>
+  static Action updateBufferedPercentageAction(int percentage) =>
       Action(PlayControllerAction.updateBufferdPercentage, payload: percentage);
 
-  static Action updatePlayingPosition(int position) =>
+  static Action updatePlayingPositionAction(int position) =>
       Action(PlayControllerAction.updatePlayingPosition, payload: position);
 
-  static Action updateContentLength(int length) =>
+  static Action updateContentLengthAction(int length) =>
       Action(PlayControllerAction.updateContentLength, payload: length);
+
+  static Action updatePlayIndexAction(int index) =>
+      Action(PlayControllerAction.updatePlayIndex, payload: index);
+
+  static Action updatePlayingProgressTimerReducer(Timer timer) =>
+      Action(PlayControllerAction.updatePlayingProgressTimer, payload: timer);
+
+  static Action updatePlayListAction(PlayListItemState state) =>
+      Action(PlayControllerAction.updatePlayList, payload: state);
 }

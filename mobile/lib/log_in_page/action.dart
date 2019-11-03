@@ -8,7 +8,7 @@ enum LogInAction {
   logInError,
 
   updateLogInInfo,
-
+  updateAuthKey,
   initFromStorage,
 
   onRegister,
@@ -33,4 +33,6 @@ class LogInActionCreator {
   static Action initFromStorageAction(Map<String, String> data) => Action(LogInAction.initFromStorage, payload: data);
 
   static Action onRegisterAction() => Action(LogInAction.onRegister);
+
+  static Action updateAuthKey(String authKey) => Action(LogInAction.updateAuthKey, payload: authKey);
 }

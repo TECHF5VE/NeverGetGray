@@ -1,8 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { ValidationPipe } from '@nestjs/common';
 import * as helmet from 'helmet';
-import * as cookieParser from 'cookie-parser';
-import * as csurf from 'csurf';
 import * as rateLimit from 'express-rate-limit';
 import * as compression from 'compression';
 
@@ -12,16 +11,24 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     cors: true,
   });
-  app.enableCors();
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      transform: true,
+    }),
+  );
+  // Global Route Prefix
+  app.setGlobalPrefix('api');
+  // Limit request
   app.use(
-    rateLimit({
+    new rateLimit({
       windowMs: 15 * 60 * 1000, // 15 minutes
       max: 100, // limit each IP to 100 requests per windowMs
     }),
   );
-  app.use(cookieParser());
-  app.use(csurf({ cookie: true }));
+  // Http security
   app.use(helmet());
+  // Enable gzip compression
   app.use(compression());
   await app.listen(3000);
 

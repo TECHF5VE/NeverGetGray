@@ -22,7 +22,7 @@ class _PlayListConnector extends ConnOp<PlayListState, List<ItemBean>> {
   List<ItemBean> get(PlayListState state) {
     if (state.playListItems?.isNotEmpty == true) {
       return state.playListItems
-          .map((data) => ItemBean('playListItem', data))
+          .map((data) => ItemBean('playListItem', data..appState = state.appState))
           .toList(growable: true);
     } else {
       return <ItemBean>[

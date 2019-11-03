@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fish_redux/fish_redux.dart';
+import 'package:never_get_gray_mobile/unit/global_store.dart';
 
 class RegisterState implements Cloneable<RegisterState> {
   TextEditingController userName;
@@ -33,4 +34,14 @@ RegisterState initState(Map<String, dynamic> args) {
     ..serverPort = (TextEditingController()..text = '')
     ..privateKey = (TextEditingController()..text = '')
     ..isWaiting = false;
+}
+
+class RegisterConnector extends ConnOp<AppState, RegisterState> {
+  @override
+  RegisterState get(AppState state) {
+    return initState(null);
+  }
+
+  @override
+  void set(AppState state, RegisterState subState) {}
 }

@@ -1,6 +1,7 @@
 import 'package:fish_redux/fish_redux.dart';
+import 'package:never_get_gray_mobile/unit/global_store.dart';
 
-class SongsListItemState implements Cloneable<SongsListItemState> {
+class SongsListItemState extends AppSubState implements Cloneable<SongsListItemState> {
   int uid;
   String name;
   String artist;
@@ -10,9 +11,11 @@ class SongsListItemState implements Cloneable<SongsListItemState> {
   int index;
   bool isPlaying;
 
+  SongsListItemState(AppState state) : super(state);
+
   @override
   SongsListItemState clone() {
-    var newState = SongsListItemState()
+    var newState = SongsListItemState(this.appState)
       ..uid = this.uid
       ..name = this.name
       ..artist = this.artist

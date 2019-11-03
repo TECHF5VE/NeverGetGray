@@ -1,6 +1,7 @@
 import 'dart:collection';
 import 'dart:math';
 import 'package:never_get_gray_mobile/songs_list_page/songs_list_item/state.dart';
+import 'package:never_get_gray_mobile/music_player_page/play_controller_component/state.dart';
 
 import 'global_store.dart';
 
@@ -26,10 +27,10 @@ class PlayQueue {
     return _instance;
   }
 
-  SongsListItemState get nextSongInfo {
-    final mode = GlobalStoreUtil.globalState.getState().playQueueMode;
-    final playList = GlobalStoreUtil.globalState.getState().playList;
-    final playIndex = GlobalStoreUtil.globalState.getState().playIndex;
+  SongsListItemState getNextSongInfo(AppSubState state) {
+    final mode = state.appState.playControllerState.playQueueMode;
+    final playList = state.appState.playControllerState.playList;
+    final playIndex = state.appState.playControllerState.playIndex;
 
     final currentSong = _playQueue.removeFirst();
     _prePlayQueue.addLast(currentSong);
@@ -54,10 +55,10 @@ class PlayQueue {
     return _playQueue.first;
   }
 
-  SongsListItemState get lastSongInfo {
-    final mode = GlobalStoreUtil.globalState.getState().playQueueMode;
-    final playList = GlobalStoreUtil.globalState.getState().playList;
-    final playIndex = GlobalStoreUtil.globalState.getState().playIndex;
+  SongsListItemState getLastSongInfo(AppSubState state) {
+    final mode = state.appState.playControllerState.playQueueMode;
+    final playList = state.appState.playControllerState.playList;
+    final playIndex = state.appState.playControllerState.playIndex;
 
     if (_prePlayQueue.isNotEmpty) {
       final last = _prePlayQueue.removeLast();
@@ -94,14 +95,14 @@ class PlayQueue {
     _prePlayQueue.clear();
   }
 
-  void generatePlayQueue() {
+  void generatePlayQueue(AppSubState state) {
     if (_playQueue.isNotEmpty) {
       _playQueue = Queue.of([_playQueue.first]);
     }
     // _prePlayQueue.clear();
-    final mode = GlobalStoreUtil.globalState.getState().playQueueMode;
-    final playList = GlobalStoreUtil.globalState.getState().playList;
-    final playIndex = GlobalStoreUtil.globalState.getState().playIndex;
+    final mode = state.appState.playControllerState.playQueueMode;
+    final playList = state.appState.playControllerState.playList;
+    final playIndex = state.appState.playControllerState.playIndex;
 
     if (playIndex == -1) {
       return;

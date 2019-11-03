@@ -16,7 +16,7 @@ Reducer<PageState> buildReducer() {
 }
 
 PageState _initPageReducer(PageState state, Action action) {
-  final newState = PageState()..currentTagType = TagType.MusicPlayer;
+  final newState = PageState(state.appState)..currentTagType = TagType.MusicPlayer;
   return newState;
 }
 
