@@ -18,7 +18,7 @@ dependencies:
   dio: ^2.1.0
   shared_preferences: ^0.5.1+2
   fluttertoast: ^3.0.3
-  fish_redux: ^0.1.5
+  fish_redux: ^0.2.8
 
 
   # The following adds the Cupertino Icons font to your application.

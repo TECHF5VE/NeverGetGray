@@ -1,4 +1,3 @@
-import 'package:fish_redux/fish_redux.dart';
 import 'dart:async';
 
 import 'package:flutter_cached_music_player/flutter_cached_music_player.dart';
@@ -19,9 +18,9 @@ void generatePlayingProcessTimer(dynamic ctx) {
         .dispatch(AppStateActionCreator.updateContentLength(contentLength));
 
     ctx.dispatch(
-        PlayControllerActionCreator.updatePlayingPosition(playPosition));
+        PlayControllerActionCreator.updatePlayingPositionAction(playPosition));
     ctx.dispatch(
-        PlayControllerActionCreator.updateContentLength(contentLength));
+        PlayControllerActionCreator.updateContentLengthAction(contentLength));
 
     if (playPosition >= contentLength) {
       t.cancel();
