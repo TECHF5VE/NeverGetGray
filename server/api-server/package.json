@@ -33,7 +33,7 @@
     "@types/passport-jwt": "^3.0.1",
     "bcrypt": "^3.0.5",
     "cache-manager": "^2.9.0",
-    "class-transformer": "^0.2.0",
+    "class-transformer": "^0.3.1",
     "class-validator": "^0.9.1",
     "compression": "^1.7.4",
     "express-rate-limit": "^3.4.0",
